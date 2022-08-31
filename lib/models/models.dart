@@ -1,13 +1,6 @@
-// ignore_for_file: non_constant_identifier_names
-import 'dart:convert';
-
 import './enums.dart';
 
 class ShippingAddress {
-  final String city;
-  final String address;
-  final String zip;
-
   const ShippingAddress({
     required this.city,
     required this.address,
@@ -22,6 +15,10 @@ class ShippingAddress {
     );
   }
 
+  final String city;
+  final String address;
+  final String zip;
+
   Map<String, dynamic> toJson() {
     return {
       'city': city,
@@ -32,12 +29,7 @@ class ShippingAddress {
 }
 
 class BuyerHistory {
-  final String registeredSince; // "2019-08-24T14:15:22Z";
-  final int loyaltyLevel; // 0;
-  final int? wishlistCount; // 0;
-  final bool? isSocialNetworksConnected; // true;
-  final bool? isPhoneNumberVerified; // true;
-  final bool? isEmailVerified; // true;
+  // true;
 
   BuyerHistory({
     required this.registeredSince,
@@ -66,6 +58,13 @@ class BuyerHistory {
     );
   }
 
+  final String registeredSince; // "2019-08-24T14:15:22Z";
+  final int loyaltyLevel; // 0;
+  final int? wishlistCount; // 0;
+  final bool? isSocialNetworksConnected; // true;
+  final bool? isPhoneNumberVerified; // true;
+  final bool? isEmailVerified;
+
   Map<String, dynamic> toJson() {
     return {
       'registered_since': registeredSince,
@@ -79,10 +78,7 @@ class BuyerHistory {
 }
 
 class Buyer {
-  final String email;
-  final String phone;
-  final String name;
-  final String? dob; // "2019-08-24"
+  // "2019-08-24"
 
   Buyer({
     required this.email,
@@ -100,6 +96,11 @@ class Buyer {
     );
   }
 
+  final String email;
+  final String phone;
+  final String name;
+  final String? dob;
+
   Map<String, dynamic> toJson() {
     return {
       'email': email,
@@ -111,26 +112,27 @@ class Buyer {
 }
 
 class ProductWebURL {
-  final String web_url;
-  ProductWebURL({required this.web_url});
+  ProductWebURL({required this.webUrl});
 
   factory ProductWebURL.fromJson(Map<String, dynamic> json) {
-    return ProductWebURL(web_url: json['web_url']);
+    return ProductWebURL(webUrl: json['web_url']);
   }
 
+  final String webUrl;
+
   Map<String, dynamic> toJson() {
-    return {'web_url': web_url};
+    return {'web_url': webUrl};
   }
 }
 
 class Identifiable {
-  final String id;
-
   Identifiable({required this.id});
 
   factory Identifiable.fromJson(Map<String, dynamic> json) {
     return Identifiable(id: json['id']);
   }
+
+  final String id;
 
   Map<String, dynamic> toJson() {
     return {'id': id};
@@ -138,13 +140,10 @@ class Identifiable {
 }
 
 class AvailableProducts {
-  final List<ProductWebURL>? installments;
-  final List<ProductWebURL>? credit_card_installments;
-  final List<ProductWebURL>? monthly_billing;
   AvailableProducts({
     this.installments,
-    this.credit_card_installments,
-    this.monthly_billing,
+    this.creditCardInstallments,
+    this.monthlyBilling,
   });
 
   factory AvailableProducts.fromJson(Map<String, dynamic> json) {
@@ -154,36 +153,37 @@ class AvailableProducts {
               .map((i) => ProductWebURL.fromJson(i))
               .toList()
           : null,
-      credit_card_installments: json['credit_card_installments'] != null
+      creditCardInstallments: json['credit_card_installments'] != null
           ? (json['credit_card_installments'] as List<dynamic>)
               .map((i) => ProductWebURL.fromJson(i))
               .toList()
           : null,
-      monthly_billing: json['monthly_billing'] != null
+      monthlyBilling: json['monthly_billing'] != null
           ? (json['monthly_billing'] as List<dynamic>)
               .map((i) => ProductWebURL.fromJson(i))
               .toList()
           : null,
     );
   }
+
+  final List<ProductWebURL>? installments;
+  final List<ProductWebURL>? creditCardInstallments;
+  final List<ProductWebURL>? monthlyBilling;
 }
 
 class SessionConfiguration {
-  final AvailableProducts available_products;
-  SessionConfiguration({required this.available_products});
+  SessionConfiguration({required this.availableProducts});
 
   factory SessionConfiguration.fromJson(Map<String, dynamic> json) {
     return SessionConfiguration(
-      available_products:
-          AvailableProducts.fromJson(json['available_products']),
+      availableProducts: AvailableProducts.fromJson(json['available_products']),
     );
   }
+
+  final AvailableProducts availableProducts;
 }
 
 class CheckoutSession {
-  final String id;
-  final Identifiable payment;
-  final SessionConfiguration configuration;
   CheckoutSession({
     required this.id,
     required this.payment,
@@ -197,19 +197,14 @@ class CheckoutSession {
       configuration: SessionConfiguration.fromJson(json['configuration']),
     );
   }
+
+  final String id;
+  final Identifiable payment;
+  final SessionConfiguration configuration;
 }
 
 // https://docs.tabby.ai/#operation/postCheckoutSession
 class Payment {
-  final String amount;
-  final Currency currency;
-  final Buyer buyer;
-  final BuyerHistory buyerHistory;
-  final ShippingAddress shippingAddress;
-  final Order order;
-  final List<OrderHistoryItem> orderHistory;
-  final String? description;
-
   Payment({
     required this.amount,
     required this.currency,
@@ -221,12 +216,21 @@ class Payment {
     this.description,
   });
 
+  final String amount;
+  final Currency currency;
+  final Buyer? buyer;
+  final BuyerHistory? buyerHistory;
+  final ShippingAddress shippingAddress;
+  final Order order;
+  final List<OrderHistoryItem> orderHistory;
+  final String? description;
+
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,
       'currency': currency.name,
-      'buyer': buyer.toJson(),
-      "buyer_history": buyerHistory.toJson(),
+      'buyer': buyer?.toJson(),
+      'buyer_history': buyerHistory?.toJson(),
       'shipping_address': shippingAddress.toJson(),
       'order': order.toJson(),
       'order_history': orderHistory,
@@ -236,18 +240,7 @@ class Payment {
 }
 
 class OrderItem {
-  final String title; // 'Sample Item #1'
-  final int quantity; // 1
-  final String unitPrice; // '300.00'
-  final String category; // jeans / dress / shorts / etc
-  final String? description; // 'To be displayed in tabby order information'
-  final String? productUrl; // https://tabby.store/p/SKU123
-  final String? referenceId; // 'SKU123'
-  final String? brand;
-  final String? color;
-  final String? gender; // 'Male' | 'Female' | 'Kids' | 'Other';
-  final String? imageUrl;
-  final String? discountAmount; // 2.00
+  // 2.00
 
   OrderItem({
     required this.title,
@@ -264,30 +257,39 @@ class OrderItem {
     this.discountAmount,
   });
 
+  final String title; // 'Sample Item #1'
+  final int quantity; // 1
+  final String unitPrice; // '300.00'
+  final String category; // jeans / dress / shorts / etc
+  final String? description; // 'To be displayed in tabby order information'
+  final String? productUrl; // https://tabby.store/p/SKU123
+  final String? referenceId; // 'SKU123'
+  final String? brand;
+  final String? color;
+  final String? gender; // 'Male' | 'Female' | 'Kids' | 'Other';
+  final String? imageUrl;
+  final String? discountAmount;
+
   Map<String, dynamic> toJson() {
     return {
       'title': title,
       'quantity': quantity,
       'unit_price': unitPrice,
-      "category": category,
+      'category': category,
       'description': description,
-      "product_url": productUrl,
-      "reference_id": referenceId,
-      "brand": brand,
-      "color": color,
-      "gender": gender,
-      "image_url": imageUrl,
-      "discount_amount": discountAmount,
+      'product_url': productUrl,
+      'reference_id': referenceId,
+      'brand': brand,
+      'color': color,
+      'gender': gender,
+      'image_url': imageUrl,
+      'discount_amount': discountAmount,
     };
   }
 }
 
 class Order {
-  final String referenceId; // #xxxx-xxxxxx-xxxx
-  final List<OrderItem> items;
-  final String? shippingAmount; // '50'
-  final String? taxAmount; // '500'
-  final String? discountAmount; // '500'
+  // '500'
 
   Order({
     required this.referenceId,
@@ -297,26 +299,24 @@ class Order {
     this.discountAmount,
   });
 
+  final String referenceId; // #xxxx-xxxxxx-xxxx
+  final List<OrderItem> items;
+  final String? shippingAmount; // '50'
+  final String? taxAmount; // '500'
+  final String? discountAmount;
+
   Map<String, dynamic> toJson() {
     return {
-      "reference_id": referenceId,
-      "items": items,
-      "shipping_amount": shippingAmount,
-      "tax_amount": taxAmount,
-      "discount_amount": discountAmount,
+      'reference_id': referenceId,
+      'items': items,
+      'shipping_amount': shippingAmount,
+      'tax_amount': taxAmount,
+      'discount_amount': discountAmount,
     };
   }
 }
 
 class OrderHistoryItem {
-  final String amount; // "0.00";
-  final OrderHistoryItemStatus status;
-  final String purchasedAt; // "2019-08-24T14:15:22Z";
-  final OrderHistoryItemPaymentMethod? paymentMethod;
-  final Buyer? buyer;
-  final ShippingAddress? shippingAddress;
-  final List<OrderItem>? items;
-
   OrderHistoryItem({
     required this.amount,
     required this.status,
@@ -327,11 +327,19 @@ class OrderHistoryItem {
     this.items,
   });
 
+  final String amount; // "0.00";
+  final OrderHistoryItemStatus status;
+  final String purchasedAt; // "2019-08-24T14:15:22Z";
+  final OrderHistoryItemPaymentMethod? paymentMethod;
+  final Buyer? buyer;
+  final ShippingAddress? shippingAddress;
+  final List<OrderItem>? items;
+
   Map<String, dynamic> toJson() {
     return {
-      "amount": amount,
-      "status": status.name,
-      "purchased_at": purchasedAt,
+      'amount': amount,
+      'status': status.name,
+      'purchased_at': purchasedAt,
       'payment_method': paymentMethod?.name,
       'buyer': buyer,
       'shipping_address': shippingAddress,
@@ -340,14 +348,34 @@ class OrderHistoryItem {
   }
 }
 
-class TabbyProduct {
-  final TabbyPurchaseType type;
-  final String webUrl;
+class MerchantUrls {
+  MerchantUrls({
+    required this.success,
+    required this.failure,
+    required this.cancel,
+  });
 
+  final String success;
+  final String failure;
+  final String cancel;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'success': success,
+      'failure': failure,
+      'cancel': cancel,
+    };
+  }
+}
+
+class TabbyProduct {
   TabbyProduct({
     required this.type,
     required this.webUrl,
   });
+
+  final TabbyPurchaseType type;
+  final String webUrl;
 
   @override
   bool operator ==(Object other) =>
@@ -362,27 +390,27 @@ class TabbyProduct {
 }
 
 class TabbySessionAvailableProducts {
-  final TabbyProduct? installments;
-  final TabbyProduct? credit_card_installments;
-  final TabbyProduct? monthly_billing;
-
   TabbySessionAvailableProducts({
     this.installments,
-    this.credit_card_installments,
-    this.monthly_billing,
+    this.creditCardInstallments,
+    this.monthlyBilling,
   });
+
+  final TabbyProduct? installments;
+  final TabbyProduct? creditCardInstallments;
+  final TabbyProduct? monthlyBilling;
 }
 
 class TabbySession {
-  final String sessionId;
-  final String paymentId;
-  final TabbySessionAvailableProducts availableProducts;
-
   TabbySession({
     required this.sessionId,
     required this.paymentId,
     required this.availableProducts,
   });
+
+  final String sessionId;
+  final String paymentId;
+  final TabbySessionAvailableProducts availableProducts;
 
   @override
   bool operator ==(Object other) =>
@@ -397,31 +425,52 @@ class TabbySession {
 }
 
 class TabbyCheckoutPayload {
-  final String merchantCode; // 'ae',
-  final Lang lang; // 'en' | 'ar,
-  final Payment payment;
-
   TabbyCheckoutPayload({
     required this.merchantCode,
     required this.lang,
     required this.payment,
+    this.merchantUrls,
   });
+
+  final String merchantCode; // 'ae' | 'sa',
+  final Lang lang; // 'en' | 'ar,
+  final Payment payment;
+  final MerchantUrls? merchantUrls;
 
   Map<String, dynamic> toJson() {
     return {
-      "merchant_code": merchantCode,
-      "lang": lang.name,
-      "payment": payment,
+      'merchant_code': merchantCode,
+      'lang': lang.name,
+      'payment': payment,
+      'merchant_urls': merchantUrls,
     };
   }
 }
 
 class TabbyCheckoutNavParams {
-  final TabbySession session;
-  final TabbyProduct selectedProduct;
-
   TabbyCheckoutNavParams({
-    required this.session,
     required this.selectedProduct,
   });
+
+  final TabbyProduct selectedProduct;
+}
+
+class TransactionStatusResponse {
+  TransactionStatusResponse({
+    required this.id,
+    required this.isPaid,
+    this.rejectionReason,
+  });
+
+  factory TransactionStatusResponse.fromJson(Map<String, dynamic> json) {
+    return TransactionStatusResponse(
+      id: json['id'],
+      isPaid: json['is_paid'],
+      rejectionReason: json['rejection_reason'],
+    );
+  }
+
+  final String id;
+  final bool isPaid;
+  final String? rejectionReason;
 }

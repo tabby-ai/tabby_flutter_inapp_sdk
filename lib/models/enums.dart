@@ -84,13 +84,40 @@ enum OrderHistoryItemPaymentMethod {
   cod,
 }
 
-extension OrderHistoryItemPaymentMethodExt on OrderHistoryItemPaymentMethod {
+enum Environment {
+  stage,
+  production,
+}
+
+extension EnvironmentExt on Environment {
+  String get host {
+    switch (this) {
+      case Environment.stage:
+        return 'https://api.tabby.dev/';
+      case Environment.production:
+        return 'https://api.tabby.ai/';
+    }
+  }
+}
+
+enum WebViewResult {
+  close,
+  authorized,
+  rejected,
+  expired,
+}
+
+extension WebViewResultExt on WebViewResult {
   String get name {
     switch (this) {
-      case OrderHistoryItemPaymentMethod.card:
-        return 'card';
-      case OrderHistoryItemPaymentMethod.cod:
-        return 'cod';
+      case WebViewResult.close:
+        return 'close';
+      case WebViewResult.authorized:
+        return 'authorized';
+      case WebViewResult.rejected:
+        return 'rejected';
+      case WebViewResult.expired:
+        return 'expired';
     }
   }
 }

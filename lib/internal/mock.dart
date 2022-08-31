@@ -40,3 +40,39 @@ final mockPayload = Payment(
     )
   ],
 );
+
+final mockPayload1 = Payment(
+  amount: '340',
+  currency: Currency.aed,
+  buyer: Buyer(
+    email: 'successful.payment@tabby.ai',
+    phone: '500000001',
+    name: 'Yazan Khalid',
+    dob: '2019-08-24',
+  ),
+  buyerHistory: null,
+  shippingAddress: const ShippingAddress(
+    city: 'string',
+    address: 'string',
+    zip: 'string',
+  ),
+  order: Order(referenceId: 'id123', items: [
+    OrderItem(
+      title: 'Jersey',
+      description: 'Jersey',
+      quantity: 1,
+      unitPrice: '10.00',
+      referenceId: 'uuid',
+      productUrl: 'http://example.com',
+      category: 'clothes',
+    )
+  ]),
+  orderHistory: [
+    OrderHistoryItem(
+      purchasedAt: '2019-08-24T14:15:22Z',
+      amount: '10.00',
+      paymentMethod: OrderHistoryItemPaymentMethod.card,
+      status: OrderHistoryItemStatus.newOne,
+    )
+  ],
+);

@@ -1,51 +1,60 @@
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:tabby_flutter/models/enums.dart';
 import 'package:tabby_flutter/models/errors.dart';
 import 'package:tabby_flutter/models/models.dart';
-import 'package:http/http.dart' as http;
 
 abstract class TabbyWithRemoteDataSource {
+  /// Initialise Tabby API.
+  void setup({
+    required String withApiKey,
+    Environment environment = Environment.production,
+  });
+
   /// Calls the https://api.tabby.dev/api/v2/checkout endpoint.
   ///
   /// Throws a [ServerException] for all error codes.
   Future<TabbySession> createSession(TabbyCheckoutPayload payload);
 }
 
-enum WebViewResult {
-  close,
-  authorized,
-  rejected,
-  expired,
-}
-
-extension WebViewResultExt on WebViewResult {
-  String get name {
-    switch (this) {
-      case WebViewResult.close:
-        return 'close';
-      case WebViewResult.authorized:
-        return 'authorized';
-      case WebViewResult.rejected:
-        return 'rejected';
-      case WebViewResult.expired:
-        return 'expired';
-    }
+class TabbySDK implements TabbyWithRemoteDataSource {
+  factory TabbySDK() {
+    return _singleton;
   }
-}
 
-class TabbySdk implements TabbyWithRemoteDataSource {
+  TabbySDK._internal();
+
+  static final TabbySDK _singleton = TabbySDK._internal();
+
   late final String apiKey;
-  static const _apiHost = 'https://api.tabby.dev/api/v2/checkout';
+  late final String host;
 
-  setup({required String withApiKey}) {
+  @override
+  void setup({
+    required String withApiKey,
+    Environment environment = Environment.production,
+  }) {
+    if (withApiKey.isEmpty) {
+      throw 'withApiKey must not be empty';
+    }
     apiKey = withApiKey;
+    host = environment.host;
+  }
+
+  void checkSetup() {
+    try {
+      apiKey.isNotEmpty && host.isNotEmpty;
+    } catch (e) {
+      throw 'TabbySDK did not setup.\nCall TabbySDK().setup in main.dart';
+    }
   }
 
   @override
   Future<TabbySession> createSession(TabbyCheckoutPayload payload) async {
+    checkSetup();
     final response = await http.post(
-      Uri.parse(_apiHost),
+      Uri.parse('${host}api/v2/checkout'),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -53,29 +62,31 @@ class TabbySdk implements TabbyWithRemoteDataSource {
       },
       body: jsonEncode(payload.toJson()),
     );
+
+    print('session create status: ${response.statusCode}');
     if (response.statusCode == 200) {
       final checkoutSession =
           CheckoutSession.fromJson(jsonDecode(response.body));
 
       final installmentsPlan =
-          checkoutSession.configuration.available_products.installments?.first;
+          checkoutSession.configuration.availableProducts.installments?.first;
       final creditCardInstallmentsPlan = checkoutSession
-          .configuration.available_products.credit_card_installments?.first;
+          .configuration.availableProducts.creditCardInstallments?.first;
       // final monthlyBillingPlan = checkoutSession
       //     .configuration.available_products.monthly_billing?.first;
 
       final availableProducts = TabbySessionAvailableProducts(
-        credit_card_installments: creditCardInstallmentsPlan != null
+        creditCardInstallments: creditCardInstallmentsPlan != null
             ? TabbyProduct(
                 type: TabbyPurchaseType.credit_card_installments,
-                webUrl: creditCardInstallmentsPlan.web_url)
+                webUrl: creditCardInstallmentsPlan.webUrl)
             : null,
         installments: installmentsPlan != null
             ? TabbyProduct(
                 type: TabbyPurchaseType.installments,
-                webUrl: installmentsPlan.web_url)
+                webUrl: installmentsPlan.webUrl)
             : null,
-        monthly_billing: null,
+        monthlyBilling: null,
       );
 
       final tabbyCheckoutSession = TabbySession(
@@ -85,9 +96,8 @@ class TabbySdk implements TabbyWithRemoteDataSource {
       );
       return tabbyCheckoutSession;
     } else {
+      print(response.body);
       throw ServerException();
     }
   }
 }
-
-final Tabby = TabbySdk();
