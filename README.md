@@ -1,15 +1,3 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
 # Tabby Flutter SDK
 
 Use the Tabby checkout in your Flutter app.
@@ -143,18 +131,17 @@ Also you can use TabbyWebView as inline widget on your page:
   }
 ```
 
-### Snippet
+### TabbyPresentationSnippet
 <p>
   <img src="./docs/snippet_en.png" width="375" title="english button">
   <img src="./docs/snippet_ar.png" width="375" title="arabic button">
 </p>
 
 
-We recommend use `TabbyCheckoutButton` as an entry point to the Tabby checkout:
+For show `TabbyPresentationSnippet` you can add as inline widget on your page:
 
 ```dart
-  TabbyCheckoutButton(
-    onPressed: openInAppBrowser,
+  TabbyPresentationSnippet(
     price: mockPayload.amount,
     currency: mockPayload.currency,
     lang: lang,

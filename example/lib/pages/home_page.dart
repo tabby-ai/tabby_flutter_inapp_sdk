@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:tabby_flutter/mock.dart';
@@ -123,10 +121,14 @@ class _HomePageState extends State<HomePage> {
                 onPressed: openCheckOutPage,
                 child: const Text('Open checkout page'),
               ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: openInAppBrowser,
+                child: const Text('Open checkout in-app browser'),
+              ),
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: TabbyCheckoutButton(
-                  onPressed: openInAppBrowser,
+                child: TabbyPresentationSnippet(
                   price: mockPayload.amount,
                   currency: mockPayload.currency,
                   lang: lang,

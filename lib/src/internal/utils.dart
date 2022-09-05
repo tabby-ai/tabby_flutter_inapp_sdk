@@ -1,4 +1,5 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:tabby_flutter_sdk/src/internal/fixtures.dart';
 import 'package:tabby_flutter_sdk/tabby_flutter_sdk.dart';
 
 void printError(Object error, StackTrace stackTrace) {
@@ -50,30 +51,34 @@ List<String> getLocalStrings({
   if (lang == Lang.ar) {
     if (currency == Currency.egp) {
       return [
-        'قسّمها على 4 دفعات شهرية بقيمة',
-        ' ${currency.name} $fullPrice',
+        ' قسّمها على 4 دفعات شهرية بقيمة',
+        fullPrice,
+        ' ${currency.name}',
         '. بدون فوائد، بدون أي رسوم. ',
         'لمعرفة المزيد'
       ];
     }
     return [
-      ' ﺔﻤﻴﻘﺑ ﺔﻳﺮﻬﺷ تﺎﻌﻓد 4 ﻰﻠﻋ ﺎﻬﻤﺴّﻗ وﺃ',
-      ' ${currency.name} $fullPrice',
-      '. ',
+      'أو قسّمها على 4 دفعات شهرية بقيمة ',
+      fullPrice,
+      ' ${currency.name} ',
+      'بدون رسوم أو فوائد. ',
       'لمعرفة المزيد'
     ];
   } else {
     if (currency == Currency.egp) {
       return [
         '4 payments of ',
-        '$fullPrice ${currency.name}',
+        fullPrice,
+        ' ${currency.name}',
         '. No interest. No fees. ',
         'Learn more'
       ];
     }
     return [
       'or 4 interest-free payments of ',
-      '$fullPrice ${currency.name}',
+      fullPrice,
+      ' ${currency.name}',
       '. ',
       'Learn more'
     ];

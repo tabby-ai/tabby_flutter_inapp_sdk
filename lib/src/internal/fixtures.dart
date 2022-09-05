@@ -5,3 +5,8 @@ final defaultMerchantUrls = MerchantUrls(
   failure: 'https://checkout.tabby.dev/failure.html',
   cancel: 'https://checkout.tabby.dev/cancel.html',
 );
+
+final snippetWebUrls = <Lang, String>{
+  Lang.en: 'https://checkout.tabby.ai/promos/product-page/installments/en/',
+  Lang.ar: 'https://checkout.tabby.ai/promos/product-page/installments/ar/',
+};
