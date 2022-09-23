@@ -44,6 +44,9 @@ class _HomePageState extends State<HomePage> {
         lang: lang,
         payment: mockPayload,
       ));
+
+      print('Session id:  ${s.sessionId}');
+
       setState(() {
         session = s;
       });
