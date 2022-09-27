@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:tabby_flutter_sdk/tabby_flutter_sdk.dart';
+import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 import 'fixtures.dart';
 
@@ -23,7 +23,8 @@ class TabbyPresentationSnippet extends StatefulWidget {
   final browser = ChromeSafariBrowser();
 
   @override
-  State<TabbyPresentationSnippet> createState() => _TabbyPresentationSnippetState();
+  State<TabbyPresentationSnippet> createState() =>
+      _TabbyPresentationSnippetState();
 }
 
 class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
@@ -112,7 +113,7 @@ class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
               padding: EdgeInsetsDirectional.only(start: 16),
               child: Image(
                 image: AssetImage('assets/images/tabby-badge.png',
-                    package: 'tabby_flutter_sdk'),
+                    package: 'tabby_flutter_inapp_sdk'),
                 width: 70,
                 height: 28,
               ),

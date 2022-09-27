@@ -1,7 +1,7 @@
-name: tabby_flutter_sdk
+name: tabby_flutter_inapp_sdk
 description: Tabby Flutter SDK
 version: 1.0.0
-homepage: https://github.com/tabby-ai/tabby-flutter-sdk
+homepage: https://github.com/tabby-ai/tabby_flutter_inapp_sdk
 
 environment:
   sdk: ">=2.14.0 <3.0.0"

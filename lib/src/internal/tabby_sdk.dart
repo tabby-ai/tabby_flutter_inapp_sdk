@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:tabby_flutter_sdk/tabby_flutter_sdk.dart';
+import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 abstract class TabbyWithRemoteDataSource {
   /// Initialise Tabby API.

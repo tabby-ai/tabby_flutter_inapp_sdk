@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:tabby_flutter_sdk/tabby_flutter_sdk.dart';
+import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 const tabbyColor = Color.fromRGBO(62, 237, 191, 1);
 

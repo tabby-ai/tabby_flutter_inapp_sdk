@@ -1,6 +1,6 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:tabby_flutter_sdk/src/internal/fixtures.dart';
-import 'package:tabby_flutter_sdk/tabby_flutter_sdk.dart';
+import 'package:tabby_flutter_inapp_sdk/src/internal/fixtures.dart';
+import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 void printError(Object error, StackTrace stackTrace) {
   print('Exception: $error');

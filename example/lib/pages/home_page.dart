@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:tabby_flutter/mock.dart';
 import 'package:tabby_flutter/pages/chechout_page.dart';
-import 'package:tabby_flutter_sdk/tabby_flutter_sdk.dart';
+import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

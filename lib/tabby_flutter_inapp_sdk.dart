@@ -1,4 +1,4 @@
-library tabby_flutter_sdk;
+library tabby_flutter_inapp_sdk;
 
 export './src/internal/tabby_checkout_button.dart';
 export './src/internal/tabby_sdk.dart';

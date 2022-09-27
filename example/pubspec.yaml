@@ -16,7 +16,7 @@ dependencies:
 
   cupertino_icons: ^1.0.2
 
-  tabby_flutter_sdk:
+  tabby_flutter_inapp_sdk:
     path: ../
 
 dev_dependencies:

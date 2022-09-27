@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tabby_flutter_sdk/tabby_flutter_sdk.dart';
+import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 class TabbyCheckoutNavParams {
   TabbyCheckoutNavParams({
