@@ -59,6 +59,9 @@ build/
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+
 example/android/.settings/
 example/android/.project
 example/ios/Flutter/flutter_export_environment.sh
