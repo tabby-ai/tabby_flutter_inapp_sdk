@@ -133,8 +133,8 @@ Also you can use TabbyWebView as inline widget on your page:
 
 ### TabbyPresentationSnippet
 <p>
-  <img src="./docs/snippet_en.png" width="375" title="english button">
-  <img src="./docs/snippet_ar.png" width="375" title="arabic button">
+  <img src="./doc/snippet_en.png" width="375" title="english button">
+  <img src="./doc/snippet_ar.png" width="375" title="arabic button">
 </p>
 
 
