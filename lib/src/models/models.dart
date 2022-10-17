@@ -225,7 +225,7 @@ class Payment {
   final Currency currency;
   final Buyer? buyer;
   final BuyerHistory? buyerHistory;
-  final ShippingAddress shippingAddress;
+  final ShippingAddress? shippingAddress;
   final Order order;
   final List<OrderHistoryItem> orderHistory;
   final String? description;
@@ -236,7 +236,7 @@ class Payment {
       'currency': currency.name,
       'buyer': buyer?.toJson(),
       'buyer_history': buyerHistory?.toJson(),
-      'shipping_address': shippingAddress.toJson(),
+      'shipping_address': shippingAddress?.toJson(),
       'order': order.toJson(),
       'order_history': orderHistory,
       'description': description

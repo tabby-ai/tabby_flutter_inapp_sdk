@@ -9,7 +9,7 @@ Future<void> main() async {
 
   TabbySDK().setup(
     withApiKey: '', // Put here your Api key
-    environment: Environment.stage, // Or use Environment.production
+    // environment: Environment.production, // Or use Environment.stage
   );
   runApp(const MyApp());
 }
