@@ -1,3 +1,7 @@
+## 1.0.2
+
+* Fixed WebView dependency
+
 ## 1.0.1
 
 * Fixed optional params of Payment
