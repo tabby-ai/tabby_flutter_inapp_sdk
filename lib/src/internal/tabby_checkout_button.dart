@@ -44,7 +44,7 @@ class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
     widget.browser.open(
       url: Uri.parse(
         '${snippetWebUrls[widget.lang]}'
-        '?price=${widget.price}&currency=${widget.currency.name}',
+        '?price=${widget.price}&currency=${widget.currency.name}&source=sdk',
       ),
       options: ChromeSafariBrowserClassOptions(
         android: AndroidChromeCustomTabsOptions(
