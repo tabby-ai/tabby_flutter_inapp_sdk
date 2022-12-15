@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Integration docs updated
+
 ## 1.1.0
 
 - Added internal webview params for proper analytics
