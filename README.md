@@ -13,12 +13,24 @@ Use the Tabby checkout in your Flutter app.
 
 Add `flutter_inappwebview` as a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
 
-In your `android/app/src/main/AndroidManifest.xml`
+## On iOS please make sure you've added in your `Info.plist`
+
+Feel free to edit descriptions according to your App
+
+```xml
+<key>NSCameraUsageDescription</key>
+<string>This allows Tabby to take a photo</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>This allows Tabby to select a photo</string>
+```
+
+## On Android please make sure you've added in your `AndroidManifest.xml`
 
 ```xml
     .....
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
 
     <application ....>
@@ -37,7 +49,7 @@ In your `android/app/src/main/AndroidManifest.xml`
 
 ## Usage
 
-1) You should initialise Tabby SDK. We recommend to do it in `main.dart` file:
+1. You should initialise Tabby SDK. We recommend to do it in `main.dart` file:
 
 ```dart
   TabbySDK().setup(
@@ -46,7 +58,7 @@ In your `android/app/src/main/AndroidManifest.xml`
   );
 ```
 
-2) Create checkout session:
+2. Create checkout session:
 
 ```dart
   final mockPayload = Payment(
@@ -96,7 +108,7 @@ In your `android/app/src/main/AndroidManifest.xml`
   ));
 ```
 
-3) Open on app browser to show checkout: 
+3. Open on app browser to show checkout:
 
 ```dart
   void openInAppBrowser() {
@@ -132,11 +144,11 @@ Also you can use TabbyWebView as inline widget on your page:
 ```
 
 ### TabbyPresentationSnippet
+
 <p>
   <img src="./doc/snippet_en.png" width="375" title="english button">
   <img src="./doc/snippet_ar.png" width="375" title="arabic button">
 </p>
-
 
 For show `TabbyPresentationSnippet` you can add as inline widget on your page:
 
