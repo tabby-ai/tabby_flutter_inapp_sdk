@@ -47,17 +47,8 @@ List<String> getLocalStrings({
   required Currency currency,
   required Lang lang,
 }) {
-  final fullPrice = double.parse(price).toStringAsFixed(2);
+  final fullPrice = double.parse(price).toStringAsFixed(currency.decimals);
   if (lang == Lang.ar) {
-    if (currency == Currency.egp) {
-      return [
-        ' قسّمها على 4 دفعات شهرية بقيمة',
-        fullPrice,
-        ' ${currency.name}',
-        '. بدون فوائد، بدون أي رسوم. ',
-        'لمعرفة المزيد'
-      ];
-    }
     return [
       'أو قسّمها على 4 دفعات شهرية بقيمة ',
       fullPrice,
@@ -66,15 +57,6 @@ List<String> getLocalStrings({
       'لمعرفة المزيد'
     ];
   } else {
-    if (currency == Currency.egp) {
-      return [
-        '4 payments of ',
-        fullPrice,
-        ' ${currency.name}',
-        '. No interest. No fees. ',
-        'Learn more'
-      ];
-    }
     return [
       'or 4 interest-free payments of ',
       fullPrice,
