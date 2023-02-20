@@ -1,3 +1,11 @@
+## 1.1.2
+
+- Updated domains for checkout result pages 
+
+## 1.1.1
+
+- Integration docs updated
+
 ## 1.1.0
 
 - Added internal webview params for proper analytics
