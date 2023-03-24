@@ -112,8 +112,10 @@ class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
             const Padding(
               padding: EdgeInsetsDirectional.only(start: 16),
               child: Image(
-                image: AssetImage('assets/images/tabby-badge.png',
-                    package: 'tabby_flutter_inapp_sdk'),
+                image: AssetImage(
+                  'assets/images/tabby-badge.png',
+                  package: 'tabby_flutter_inapp_sdk',
+                ),
                 width: 70,
                 height: 28,
               ),
