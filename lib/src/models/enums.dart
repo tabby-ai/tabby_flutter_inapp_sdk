@@ -1,6 +1,6 @@
 enum Lang { en, ar }
 
-enum Currency { aed, sar, kwd, bdh, egp }
+enum Currency { aed, sar, kwd, bdh, qar }
 
 extension CurrencyExt on Currency {
   String get name {
@@ -13,8 +13,23 @@ extension CurrencyExt on Currency {
         return 'KWD';
       case Currency.bdh:
         return 'BDH';
-      case Currency.egp:
-        return 'EGP';
+      case Currency.qar:
+        return 'QAR';
+    }
+  }
+
+  int get decimals {
+    switch (this) {
+      case Currency.aed:
+        return 2;
+      case Currency.sar:
+        return 2;
+      case Currency.kwd:
+        return 3;
+      case Currency.bdh:
+        return 3;
+      case Currency.qar:
+        return 2;
     }
   }
 }

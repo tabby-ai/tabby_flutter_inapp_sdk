@@ -1,6 +1,10 @@
+## 1.2.0
+
+- Qatar supported, Egypt deprecated.
+
 ## 1.1.2
 
-- Updated domains for checkout result pages 
+- Updated domains for checkout result pages
 
 ## 1.1.1
 
