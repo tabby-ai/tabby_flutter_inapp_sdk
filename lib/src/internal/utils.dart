@@ -47,7 +47,8 @@ List<String> getLocalStrings({
   required Currency currency,
   required Lang lang,
 }) {
-  final fullPrice = double.parse(price).toStringAsFixed(currency.decimals);
+  final fullPrice =
+      (double.parse(price) / 4).toStringAsFixed(currency.decimals);
   if (lang == Lang.ar) {
     return [
       'أو قسّمها على 4 دفعات شهرية بقيمة ',
