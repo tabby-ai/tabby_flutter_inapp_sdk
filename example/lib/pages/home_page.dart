@@ -92,6 +92,23 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TabbyPresentationSnippet(
+                price: '100.00',
+                currency: Currency.aed,
+                lang: Lang.en,
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: TabbyCheckoutSnippet(
+                price: '1100',
+                currency: Currency.aed,
+                lang: Lang.en,
+              ),
+            ),
             Text(
               '${mockPayload.amount} ${mockPayload.currency.name}',
               style: Theme.of(context).textTheme.headline6,
