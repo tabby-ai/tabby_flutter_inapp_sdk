@@ -67,3 +67,24 @@ List<String> getLocalStrings({
     ];
   }
 }
+
+const space = ' ';
+
+List<String> getLocalStringsNonStandard({
+  required Currency currency,
+  required Lang lang,
+}) {
+  if (lang == Lang.ar) {
+    return [
+      'قسّم مشترياتك وادفعها على كيفك. بدون أي فوائد، أو رسوم.',
+      space,
+      'لمعرفة المزيد'
+    ];
+  } else {
+    return [
+      'Split your purchase and pay over time. No interest. No fees.',
+      space,
+      'Learn more'
+    ];
+  }
+}
