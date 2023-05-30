@@ -1,10 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tabby_flutter_inapp_sdk/src/internal/fixtures.dart';
+import 'package:tabby_flutter_inapp_sdk/src/resources/locales.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 void printError(Object error, StackTrace stackTrace) {
-  print('Exception: $error');
-  print('StackTrace: $stackTrace');
+  debugPrint('Exception: $error');
+  debugPrint('StackTrace: $stackTrace');
 }
 
 IOSNavigationResponseAction iosNavigationResponseHandler({
@@ -87,4 +89,23 @@ List<String> getLocalStringsNonStandard({
       'Learn more'
     ];
   }
+}
+
+List<String> getCheckoutSnippetStrings({
+  required String price,
+  required Currency currency,
+  required Lang lang,
+}) {
+  return [
+    ...AppLocales.instance().checkoutSnippet(lang).values,
+  ];
+}
+
+String getPrice({
+  required String price,
+  required Currency currency,
+}) {
+  final installmentPrice =
+      (double.parse(price) / 4).toStringAsFixed(currency.decimals);
+  return installmentPrice;
 }
