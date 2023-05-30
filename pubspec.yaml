@@ -27,6 +27,10 @@ flutter:
     - assets/images/tabby-badge.png
     - assets/images/2.0x/tabby-badge.png
     - assets/images/3.0x/tabby-badge.png
+    - assets/images/r1.png
+    - assets/images/r2.png
+    - assets/images/r3.png
+    - assets/images/r4.png
   fonts:
     - family: Inter
       fonts:
