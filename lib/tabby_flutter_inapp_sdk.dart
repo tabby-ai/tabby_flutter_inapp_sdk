@@ -1,5 +1,6 @@
 library tabby_flutter_inapp_sdk;
 
+export './src/internal/tabby_checkout_snippet.dart';
 export './src/internal/tabby_presentation_snippet.dart';
 export './src/internal/tabby_sdk.dart';
 export './src/internal/tabby_web_view.dart';
