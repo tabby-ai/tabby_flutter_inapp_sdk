@@ -35,6 +35,8 @@ class _TabbyCheckoutSnippetState extends State<TabbyCheckoutSnippet> {
   Widget build(BuildContext context) {
     final installmentPrice =
         getPrice(price: widget.price, currency: widget.currency);
+    final amountText = '${widget.currency.name} $installmentPrice';
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -63,143 +65,124 @@ class _TabbyCheckoutSnippetState extends State<TabbyCheckoutSnippet> {
             ),
             Row(
               children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: const Image(
-                          image: AssetImage(
-                            'assets/images/r1.jpg',
-                            package: 'tabby_flutter_inapp_sdk',
-                          ),
-                          width: 40,
-                          height: 40,
-                        ),
-                      ),
-                      gap,
-                      Text(
-                        localeStrings[1],
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      gap,
-                      Text(
-                        '${widget.currency.name} $installmentPrice',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: dividerColor,
-                        ),
-                      ),
-                    ],
-                  ),
+                CheckoutSnippetCell(
+                  index: 1,
+                  localeStrings: localeStrings,
+                  amountText: amountText,
                 ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: const Image(
-                          image: AssetImage(
-                            'assets/images/r2.jpg',
-                            package: 'tabby_flutter_inapp_sdk',
-                          ),
-                          width: 40,
-                          height: 40,
-                        ),
-                      ),
-                      gap,
-                      Text(
-                        localeStrings[2],
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      gap,
-                      Text(
-                        '${widget.currency.name} $installmentPrice',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: dividerColor,
-                        ),
-                      ),
-                    ],
-                  ),
+                CheckoutSnippetCell(
+                  index: 2,
+                  localeStrings: localeStrings,
+                  amountText: amountText,
                 ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: const Image(
-                          image: AssetImage(
-                            'assets/images/r3.jpg',
-                            package: 'tabby_flutter_inapp_sdk',
-                          ),
-                          width: 40,
-                          height: 40,
-                        ),
-                      ),
-                      gap,
-                      Text(
-                        localeStrings[3],
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      gap,
-                      Text(
-                        '${widget.currency.name} $installmentPrice',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: dividerColor,
-                        ),
-                      ),
-                    ],
-                  ),
+                CheckoutSnippetCell(
+                  index: 3,
+                  localeStrings: localeStrings,
+                  amountText: amountText,
                 ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: const Image(
-                          image: AssetImage(
-                            'assets/images/r4.jpg',
-                            package: 'tabby_flutter_inapp_sdk',
-                          ),
-                          width: 40,
-                          height: 40,
-                        ),
-                      ),
-                      gap,
-                      Text(
-                        localeStrings[4],
-                        style: const TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      gap,
-                      Text(
-                        '${widget.currency.name} $installmentPrice',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: dividerColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                CheckoutSnippetCell(
+                  index: 4,
+                  localeStrings: localeStrings,
+                  amountText: amountText,
+                ),
               ],
             ),
           ],
         ),
       ],
+    );
+  }
+}
+
+class CheckoutSnippetCell extends StatelessWidget {
+  const CheckoutSnippetCell({
+    required this.index,
+    required this.localeStrings,
+    required this.amountText,
+    Key? key,
+  }) : super(key: key);
+
+  final List<String> localeStrings;
+  final String amountText;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          CheckoutSnippetImage(index: index),
+          gap,
+          CheckoutWhenText(index: index, localeStrings: localeStrings),
+          gap,
+          CheckoutSnippetAmountText(amount: amountText),
+        ],
+      ),
+    );
+  }
+}
+
+class CheckoutWhenText extends StatelessWidget {
+  const CheckoutWhenText({
+    required this.index,
+    required this.localeStrings,
+    Key? key,
+  }) : super(key: key);
+
+  final List<String> localeStrings;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      localeStrings[index],
+      style: const TextStyle(
+        fontSize: 11,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+}
+
+class CheckoutSnippetImage extends StatelessWidget {
+  const CheckoutSnippetImage({
+    required this.index,
+    Key? key,
+  }) : super(key: key);
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 2),
+      child: Image(
+        image: AssetImage(
+          'assets/images/r$index.jpg',
+          package: 'tabby_flutter_inapp_sdk',
+        ),
+        width: 40,
+        height: 40,
+      ),
+    );
+  }
+}
+
+class CheckoutSnippetAmountText extends StatelessWidget {
+  const CheckoutSnippetAmountText({
+    required this.amount,
+    Key? key,
+  }) : super(key: key);
+  final String amount;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      amount,
+      style: TextStyle(
+        fontSize: 11,
+        color: dividerColor,
+      ),
     );
   }
 }
