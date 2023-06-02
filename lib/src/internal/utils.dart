@@ -91,16 +91,6 @@ List<String> getLocalStringsNonStandard({
   }
 }
 
-List<String> getCheckoutSnippetStrings({
-  required String price,
-  required Currency currency,
-  required Lang lang,
-}) {
-  return [
-    ...AppLocales.instance().checkoutSnippet(lang).values,
-  ];
-}
-
 String getPrice({
   required String price,
   required Currency currency,
