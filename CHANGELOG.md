@@ -1,6 +1,7 @@
 ## 1.3.0
 
-- Added CheckoutSnippet
+- Added TabbyCheckoutSnippet
+- Added TabbyPresentationSnippetNonStantard
 
 ## 1.2.0
 
