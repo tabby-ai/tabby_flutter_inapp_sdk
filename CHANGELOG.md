@@ -1,3 +1,7 @@
+## 1.3.0
+
+- Added CheckoutSnippet
+
 ## 1.2.0
 
 - Qatar supported, Egypt deprecated.
