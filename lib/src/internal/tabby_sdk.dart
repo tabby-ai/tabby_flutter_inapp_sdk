@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
@@ -61,7 +62,7 @@ class TabbySDK implements TabbyWithRemoteDataSource {
       body: jsonEncode(payload.toJson()),
     );
 
-    print('session create status: ${response.statusCode}');
+    debugPrint('session create status: ${response.statusCode}');
     if (response.statusCode == 200) {
       final checkoutSession =
           CheckoutSession.fromJson(jsonDecode(response.body));
@@ -92,7 +93,7 @@ class TabbySDK implements TabbyWithRemoteDataSource {
       );
       return tabbyCheckoutSession;
     } else {
-      print(response.body);
+      debugPrint(response.body);
       throw ServerException();
     }
   }

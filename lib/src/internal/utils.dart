@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tabby_flutter_inapp_sdk/src/internal/fixtures.dart';
-import 'package:tabby_flutter_inapp_sdk/src/resources/locales.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 void printError(Object error, StackTrace stackTrace) {
@@ -55,7 +54,7 @@ List<String> getLocalStrings({
     return [
       'أو قسّمها على 4 دفعات شهرية بقيمة ',
       fullPrice,
-      ' ${currency.name} ',
+      ' ${currency.displayName} ',
       'بدون رسوم أو فوائد. ',
       'لمعرفة المزيد'
     ];
@@ -63,7 +62,7 @@ List<String> getLocalStrings({
     return [
       'or 4 interest-free payments of ',
       fullPrice,
-      ' ${currency.name}',
+      ' ${currency.displayName}',
       '. ',
       'Learn more'
     ];

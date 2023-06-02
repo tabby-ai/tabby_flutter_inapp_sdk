@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
@@ -44,7 +46,7 @@ class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
     widget.browser.open(
       url: Uri.parse(
         '${snippetWebUrls[widget.lang]}'
-        '?price=${widget.price}&currency=${widget.currency.name}$sdkQuery',
+        '?price=${widget.price}&currency=${widget.currency.displayName}$sdkQuery',
       ),
       options: ChromeSafariBrowserClassOptions(
         android: AndroidChromeCustomTabsOptions(

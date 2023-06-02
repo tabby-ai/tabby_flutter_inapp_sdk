@@ -35,7 +35,7 @@ class _TabbyCheckoutSnippetState extends State<TabbyCheckoutSnippet> {
   Widget build(BuildContext context) {
     final installmentPrice =
         getPrice(price: widget.price, currency: widget.currency);
-    final amountText = '${widget.currency.name} $installmentPrice';
+    final amountText = '${widget.currency.displayName} $installmentPrice';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
