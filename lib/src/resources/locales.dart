@@ -19,7 +19,7 @@ const checkoutSnippetLocalesAr = {
 class AppLocales {
   AppLocales._();
 
-  /// Provides instance [AnalyticsService].
+  /// Provides instance [AppLocales].
   factory AppLocales.instance() => _instance;
 
   static final AppLocales _instance = AppLocales._();
