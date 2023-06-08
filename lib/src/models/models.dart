@@ -294,8 +294,6 @@ class OrderItem {
 }
 
 class Order {
-  // '500'
-
   Order({
     required this.referenceId,
     required this.items,
