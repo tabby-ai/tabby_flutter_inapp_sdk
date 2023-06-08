@@ -3,7 +3,7 @@ enum Lang { en, ar }
 enum Currency { aed, sar, kwd, bdh, qar }
 
 extension CurrencyExt on Currency {
-  String get name {
+  String get displayName {
     switch (this) {
       case Currency.aed:
         return 'AED';

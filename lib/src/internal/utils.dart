@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tabby_flutter_inapp_sdk/src/internal/fixtures.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 void printError(Object error, StackTrace stackTrace) {
-  print('Exception: $error');
-  print('StackTrace: $stackTrace');
+  debugPrint('Exception: $error');
+  debugPrint('StackTrace: $stackTrace');
 }
 
 IOSNavigationResponseAction iosNavigationResponseHandler({
@@ -53,7 +54,7 @@ List<String> getLocalStrings({
     return [
       'أو قسّمها على 4 دفعات شهرية بقيمة ',
       fullPrice,
-      ' ${currency.name} ',
+      ' ${currency.displayName} ',
       'بدون رسوم أو فوائد. ',
       'لمعرفة المزيد'
     ];
@@ -61,9 +62,39 @@ List<String> getLocalStrings({
     return [
       'or 4 interest-free payments of ',
       fullPrice,
-      ' ${currency.name}',
+      ' ${currency.displayName}',
       '. ',
       'Learn more'
     ];
   }
+}
+
+const space = ' ';
+
+List<String> getLocalStringsNonStandard({
+  required Currency currency,
+  required Lang lang,
+}) {
+  if (lang == Lang.ar) {
+    return [
+      'قسّم مشترياتك وادفعها على كيفك. بدون أي فوائد، أو رسوم.',
+      space,
+      'لمعرفة المزيد'
+    ];
+  } else {
+    return [
+      'Split your purchase and pay over time. No interest. No fees.',
+      space,
+      'Learn more'
+    ];
+  }
+}
+
+String getPrice({
+  required String price,
+  required Currency currency,
+}) {
+  final installmentPrice =
+      (double.parse(price) / 4).toStringAsFixed(currency.decimals);
+  return installmentPrice;
 }

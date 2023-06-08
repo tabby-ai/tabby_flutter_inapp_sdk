@@ -1,3 +1,8 @@
+## 1.3.0
+
+- Added TabbyCheckoutSnippet
+- Added TabbyPresentationSnippetNonStantard
+
 ## 1.2.0
 
 - Qatar supported, Egypt deprecated.

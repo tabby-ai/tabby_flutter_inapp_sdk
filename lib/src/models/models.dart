@@ -233,7 +233,7 @@ class Payment {
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,
-      'currency': currency.name,
+      'currency': currency.displayName,
       'buyer': buyer?.toJson(),
       'buyer_history': buyerHistory?.toJson(),
       'shipping_address': shippingAddress?.toJson(),
@@ -294,8 +294,6 @@ class OrderItem {
 }
 
 class Order {
-  // '500'
-
   Order({
     required this.referenceId,
     required this.items,

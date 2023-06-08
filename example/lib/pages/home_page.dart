@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
         payment: mockPayload,
       ));
 
-      print('Session id:  ${s.sessionId}');
+      debugPrint('Session id: ${s.sessionId}');
 
       setState(() {
         session = s;
@@ -92,25 +92,42 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TabbyPresentationSnippet(
+                price: '100.00',
+                currency: Currency.aed,
+                lang: Lang.en,
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Padding(
+              padding: EdgeInsets.all(16),
+              child: TabbyCheckoutSnippet(
+                price: '1100',
+                currency: Currency.aed,
+                lang: Lang.en,
+              ),
+            ),
             Text(
-              '${mockPayload.amount} ${mockPayload.currency.name}',
-              style: Theme.of(context).textTheme.headline6,
+              '${mockPayload.amount} ${mockPayload.currency.displayName}',
+              style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
             Text(
               mockPayload.buyer?.email ?? '',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
             Text(
               mockPayload.buyer?.phone ?? '',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
             Text(
               _status,
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 24),
             if (session == null) ...[

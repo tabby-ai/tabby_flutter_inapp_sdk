@@ -10,3 +10,5 @@ final snippetWebUrls = <Lang, String>{
   Lang.en: 'https://checkout.tabby.ai/promos/product-page/installments/en/',
   Lang.ar: 'https://checkout.tabby.ai/promos/product-page/installments/ar/',
 };
+
+const sdkQuery = '&source=sdk&sdkType=flutter';

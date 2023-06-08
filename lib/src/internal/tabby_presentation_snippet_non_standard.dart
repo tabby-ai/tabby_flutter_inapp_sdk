@@ -4,9 +4,8 @@ import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 import 'fixtures.dart';
 
-class TabbyPresentationSnippet extends StatefulWidget {
-  TabbyPresentationSnippet({
-    required this.price,
+class TabbyPresentationSnippetNonStantard extends StatefulWidget {
+  TabbyPresentationSnippetNonStantard({
     required this.currency,
     required this.lang,
     this.borderColor = const Color(0xFFD6DED6),
@@ -14,7 +13,6 @@ class TabbyPresentationSnippet extends StatefulWidget {
     this.textColor = const Color(0xFF292929),
     Key? key,
   }) : super(key: key);
-  final String price;
   final Currency currency;
   final Lang lang;
   final Color borderColor;
@@ -23,17 +21,17 @@ class TabbyPresentationSnippet extends StatefulWidget {
   final browser = ChromeSafariBrowser();
 
   @override
-  State<TabbyPresentationSnippet> createState() =>
-      _TabbyPresentationSnippetState();
+  State<TabbyPresentationSnippetNonStantard> createState() =>
+      _TabbyPresentationSnippetNonStantardState();
 }
 
-class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
+class _TabbyPresentationSnippetNonStantardState
+    extends State<TabbyPresentationSnippetNonStantard> {
   late List<String> localStrings;
 
   @override
   void initState() {
-    localStrings = getLocalStrings(
-      price: widget.price,
+    localStrings = getLocalStringsNonStandard(
       currency: widget.currency,
       lang: widget.lang,
     );
@@ -44,7 +42,7 @@ class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
     widget.browser.open(
       url: Uri.parse(
         '${snippetWebUrls[widget.lang]}'
-        '?price=${widget.price}&currency=${widget.currency.name}&source=sdk',
+        '?currency=${widget.currency.displayName}$sdkQuery&installmentsCount=0',
       ),
       options: ChromeSafariBrowserClassOptions(
         android: AndroidChromeCustomTabsOptions(
@@ -86,21 +84,9 @@ class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
                   children: [
                     TextSpan(
                       text: localStrings[1],
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.bold,
-                      ),
                     ),
                     TextSpan(
                       text: localStrings[2],
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(text: localStrings[3]),
-                    TextSpan(
-                      text: localStrings[4],
                       style: const TextStyle(
                         decoration: TextDecoration.underline,
                       ),

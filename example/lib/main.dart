@@ -8,7 +8,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   TabbySDK().setup(
-    withApiKey: '', // Put here your Api key
+    withApiKey: 'YOUR_API_KEY', // Put here your Api key
     // environment: Environment.production, // Or use Environment.stage
   );
   runApp(const MyApp());
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         Locale('en', ''),
         Locale('ar', ''),
       ],
-      locale: const Locale('ar', ''), // Use it for check Arabic locale
+      locale: const Locale('en', ''), // Use it for check Arabic locale
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
