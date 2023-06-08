@@ -66,22 +66,22 @@ class _TabbyCheckoutSnippetState extends State<TabbyCheckoutSnippet> {
             Row(
               children: [
                 CheckoutSnippetCell(
-                  index: 1,
+                  position: 1,
                   localeStrings: localeStrings,
                   amountText: amountText,
                 ),
                 CheckoutSnippetCell(
-                  index: 2,
+                  position: 2,
                   localeStrings: localeStrings,
                   amountText: amountText,
                 ),
                 CheckoutSnippetCell(
-                  index: 3,
+                  position: 3,
                   localeStrings: localeStrings,
                   amountText: amountText,
                 ),
                 CheckoutSnippetCell(
-                  index: 4,
+                  position: 4,
                   localeStrings: localeStrings,
                   amountText: amountText,
                 ),
@@ -96,7 +96,7 @@ class _TabbyCheckoutSnippetState extends State<TabbyCheckoutSnippet> {
 
 class CheckoutSnippetCell extends StatelessWidget {
   const CheckoutSnippetCell({
-    required this.index,
+    required this.position,
     required this.localeStrings,
     required this.amountText,
     Key? key,
@@ -104,16 +104,16 @@ class CheckoutSnippetCell extends StatelessWidget {
 
   final List<String> localeStrings;
   final String amountText;
-  final int index;
+  final int position;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Column(
         children: [
-          CheckoutSnippetImage(index: index),
+          CheckoutSnippetImage(position: position),
           gap,
-          CheckoutWhenText(index: index, localeStrings: localeStrings),
+          CheckoutWhenText(position: position, localeStrings: localeStrings),
           gap,
           CheckoutSnippetAmountText(amount: amountText),
         ],
@@ -124,18 +124,18 @@ class CheckoutSnippetCell extends StatelessWidget {
 
 class CheckoutWhenText extends StatelessWidget {
   const CheckoutWhenText({
-    required this.index,
+    required this.position,
     required this.localeStrings,
     Key? key,
   }) : super(key: key);
 
   final List<String> localeStrings;
-  final int index;
+  final int position;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      localeStrings[index],
+      localeStrings[position],
       style: const TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.bold,
@@ -146,11 +146,11 @@ class CheckoutWhenText extends StatelessWidget {
 
 class CheckoutSnippetImage extends StatelessWidget {
   const CheckoutSnippetImage({
-    required this.index,
+    required this.position,
     Key? key,
   }) : super(key: key);
 
-  final int index;
+  final int position;
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +158,7 @@ class CheckoutSnippetImage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: Image(
         image: AssetImage(
-          'assets/images/r$index.jpg',
+          'assets/images/r$position.jpg',
           package: 'tabby_flutter_inapp_sdk',
         ),
         width: 40,
