@@ -1,6 +1,7 @@
 ## 1.4.0
 
 - Removed credit_card_installments
+- Removed monthly_billing
 
 ## 1.3.0
 
