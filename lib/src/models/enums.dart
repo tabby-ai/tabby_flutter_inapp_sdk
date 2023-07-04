@@ -36,8 +36,6 @@ extension CurrencyExt on Currency {
 
 enum TabbyPurchaseType {
   installments,
-  creditCardInstallments,
-  monthlyBilling,
 }
 
 extension TabbyPurchaseTypeExt on TabbyPurchaseType {
@@ -45,10 +43,6 @@ extension TabbyPurchaseTypeExt on TabbyPurchaseType {
     switch (this) {
       case TabbyPurchaseType.installments:
         return 'installments';
-      case TabbyPurchaseType.creditCardInstallments:
-        return 'credit_card_installments';
-      case TabbyPurchaseType.monthlyBilling:
-        return 'monthly_billing';
     }
   }
 }

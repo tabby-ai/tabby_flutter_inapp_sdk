@@ -69,21 +69,13 @@ class TabbySDK implements TabbyWithRemoteDataSource {
 
       final installmentsPlan =
           checkoutSession.configuration.availableProducts.installments?.first;
-      final creditCardInstallmentsPlan = checkoutSession
-          .configuration.availableProducts.creditCardInstallments?.first;
 
       final availableProducts = TabbySessionAvailableProducts(
-        creditCardInstallments: creditCardInstallmentsPlan != null
-            ? TabbyProduct(
-                type: TabbyPurchaseType.creditCardInstallments,
-                webUrl: creditCardInstallmentsPlan.webUrl)
-            : null,
         installments: installmentsPlan != null
             ? TabbyProduct(
                 type: TabbyPurchaseType.installments,
                 webUrl: installmentsPlan.webUrl)
             : null,
-        monthlyBilling: null,
       );
 
       final tabbyCheckoutSession = TabbySession(
