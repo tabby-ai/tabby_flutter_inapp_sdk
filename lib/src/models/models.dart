@@ -147,8 +147,6 @@ class Identifiable {
 class AvailableProducts {
   AvailableProducts({
     this.installments,
-    this.creditCardInstallments,
-    this.monthlyBilling,
   });
 
   factory AvailableProducts.fromJson(Map<String, dynamic> json) {
@@ -158,22 +156,10 @@ class AvailableProducts {
               .map((i) => ProductWebURL.fromJson(i))
               .toList()
           : null,
-      creditCardInstallments: json['credit_card_installments'] != null
-          ? (json['credit_card_installments'] as List<dynamic>)
-              .map((i) => ProductWebURL.fromJson(i))
-              .toList()
-          : null,
-      monthlyBilling: json['monthly_billing'] != null
-          ? (json['monthly_billing'] as List<dynamic>)
-              .map((i) => ProductWebURL.fromJson(i))
-              .toList()
-          : null,
     );
   }
 
   final List<ProductWebURL>? installments;
-  final List<ProductWebURL>? creditCardInstallments;
-  final List<ProductWebURL>? monthlyBilling;
 }
 
 class SessionConfiguration {
@@ -395,13 +381,9 @@ class TabbyProduct {
 class TabbySessionAvailableProducts {
   TabbySessionAvailableProducts({
     this.installments,
-    this.creditCardInstallments,
-    this.monthlyBilling,
   });
 
   final TabbyProduct? installments;
-  final TabbyProduct? creditCardInstallments;
-  final TabbyProduct? monthlyBilling;
 }
 
 class TabbySession {
