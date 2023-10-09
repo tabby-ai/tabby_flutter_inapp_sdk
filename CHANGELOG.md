@@ -1,3 +1,7 @@
+## 1.4.1
+
+- Fix Bahrain currency
+
 ## 1.4.0
 
 - Removed credit_card_installments
