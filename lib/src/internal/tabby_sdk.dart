@@ -35,7 +35,7 @@ class TabbySDK implements TabbyWithRemoteDataSource {
     Environment environment = Environment.production,
   }) {
     if (withApiKey.isEmpty) {
-      throw 'withApiKey must not be empty';
+      throw 'Tabby public key cannot be empty';
     }
     apiKey = withApiKey;
     host = environment.host;
