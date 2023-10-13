@@ -1,3 +1,7 @@
+## 1.4.2
+
+- Fix TabbyPresentationSnippet not displaying updated price
+
 ## 1.4.1
 
 - Fix Bahrain currency

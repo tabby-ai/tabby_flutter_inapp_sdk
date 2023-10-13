@@ -55,7 +55,7 @@ Feel free to edit descriptions according to your App
 ```dart
   TabbySDK().setup(
     withApiKey: '', // Put here your Api key
-    environment: Environment.stage, // Or use Environment.production
+    environment: Environment.production,
   );
 ```
 

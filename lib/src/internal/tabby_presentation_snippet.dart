@@ -6,7 +6,7 @@ import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 import 'fixtures.dart';
 
-class TabbyPresentationSnippet extends StatefulWidget {
+class TabbyPresentationSnippet extends StatelessWidget {
   TabbyPresentationSnippet({
     required this.price,
     required this.currency,
@@ -24,29 +24,11 @@ class TabbyPresentationSnippet extends StatefulWidget {
   final Color textColor;
   final browser = ChromeSafariBrowser();
 
-  @override
-  State<TabbyPresentationSnippet> createState() =>
-      _TabbyPresentationSnippetState();
-}
-
-class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
-  late List<String> localStrings;
-
-  @override
-  void initState() {
-    localStrings = getLocalStrings(
-      price: widget.price,
-      currency: widget.currency,
-      lang: widget.lang,
-    );
-    super.initState();
-  }
-
   void openWebBrowser() {
-    widget.browser.open(
+    browser.open(
       url: Uri.parse(
-        '${snippetWebUrls[widget.lang]}'
-        '?price=${widget.price}&currency=${widget.currency.displayName}$sdkQuery',
+        '${snippetWebUrls[lang]}'
+        '?price=$price&currency=${currency.displayName}$sdkQuery',
       ),
       options: ChromeSafariBrowserClassOptions(
         android: AndroidChromeCustomTabsOptions(
@@ -60,15 +42,20 @@ class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
 
   @override
   Widget build(BuildContext context) {
+    final localStrings = getLocalStrings(
+      price: price,
+      currency: currency,
+      lang: lang,
+    );
     return GestureDetector(
       onTap: openWebBrowser,
       child: Container(
         constraints: const BoxConstraints(minWidth: 300, maxWidth: 720),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: widget.backgroundColor,
+          color: backgroundColor,
           border: Border.all(
-            color: widget.borderColor,
+            color: borderColor,
             width: 1,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(4)),
@@ -80,8 +67,8 @@ class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
                 text: TextSpan(
                   text: localStrings[0],
                   style: TextStyle(
-                    color: widget.textColor,
-                    fontFamily: widget.lang == Lang.ar ? 'Arial' : 'Inter',
+                    color: textColor,
+                    fontFamily: lang == Lang.ar ? 'Arial' : 'Inter',
                     fontSize: 15,
                     height: 1.5,
                   ),
