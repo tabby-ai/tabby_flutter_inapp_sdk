@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:tabby_flutter_inapp_sdk/src/internal/browser.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 import 'fixtures.dart';
 
 class TabbyPresentationSnippetNonStantard extends StatefulWidget {
-  TabbyPresentationSnippetNonStantard({
+  const TabbyPresentationSnippetNonStantard({
     required this.currency,
     required this.lang,
     this.borderColor = const Color(0xFFD6DED6),
@@ -18,7 +19,6 @@ class TabbyPresentationSnippetNonStantard extends StatefulWidget {
   final Color borderColor;
   final Color backgroundColor;
   final Color textColor;
-  final browser = ChromeSafariBrowser();
 
   @override
   State<TabbyPresentationSnippetNonStantard> createState() =>
@@ -28,6 +28,7 @@ class TabbyPresentationSnippetNonStantard extends StatefulWidget {
 class _TabbyPresentationSnippetNonStantardState
     extends State<TabbyPresentationSnippetNonStantard> {
   late List<String> localStrings;
+  late final TabbyChromeSafariBrowser _browser;
 
   @override
   void initState() {
@@ -35,11 +36,31 @@ class _TabbyPresentationSnippetNonStantardState
       currency: widget.currency,
       lang: widget.lang,
     );
+    TabbySDK().logEvent(
+      AnalyticsEvent.snipperCardRendered,
+      EventProperties(
+        currency: widget.currency,
+        lang: widget.lang,
+        installmentsCount: null,
+      ),
+    );
+    _browser = TabbyChromeSafariBrowser(
+      currency: widget.currency,
+      lang: widget.lang,
+    );
     super.initState();
   }
 
   void openWebBrowser() {
-    widget.browser.open(
+    TabbySDK().logEvent(
+      AnalyticsEvent.learnMoreClicked,
+      EventProperties(
+        currency: widget.currency,
+        lang: widget.lang,
+        installmentsCount: null,
+      ),
+    );
+    _browser.open(
       url: Uri.parse(
         '${snippetWebUrls[widget.lang]}'
         '?currency=${widget.currency.displayName}$sdkQuery&installmentsCount=0',

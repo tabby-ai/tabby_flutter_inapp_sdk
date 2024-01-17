@@ -2,12 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:tabby_flutter_inapp_sdk/src/internal/browser.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 import 'fixtures.dart';
 
-class TabbyPresentationSnippet extends StatelessWidget {
-  TabbyPresentationSnippet({
+class TabbyPresentationSnippet extends StatefulWidget {
+  const TabbyPresentationSnippet({
     required this.price,
     required this.currency,
     required this.lang,
@@ -22,13 +23,46 @@ class TabbyPresentationSnippet extends StatelessWidget {
   final Color borderColor;
   final Color backgroundColor;
   final Color textColor;
-  final browser = ChromeSafariBrowser();
+
+  @override
+  State<TabbyPresentationSnippet> createState() =>
+      _TabbyPresentationSnippetState();
+}
+
+class _TabbyPresentationSnippetState extends State<TabbyPresentationSnippet> {
+  late final TabbyChromeSafariBrowser _browser;
+
+  @override
+  void initState() {
+    TabbySDK().logEvent(
+      AnalyticsEvent.snipperCardRendered,
+      EventProperties(
+        currency: widget.currency,
+        lang: widget.lang,
+        installmentsCount: 4,
+      ),
+    );
+    _browser = TabbyChromeSafariBrowser(
+      currency: widget.currency,
+      lang: widget.lang,
+      installmentsCount: 4,
+    );
+    super.initState();
+  }
 
   void openWebBrowser() {
-    browser.open(
+    TabbySDK().logEvent(
+      AnalyticsEvent.learnMoreClicked,
+      EventProperties(
+        currency: widget.currency,
+        lang: widget.lang,
+        installmentsCount: 4,
+      ),
+    );
+    _browser.open(
       url: Uri.parse(
-        '${snippetWebUrls[lang]}'
-        '?price=$price&currency=${currency.displayName}$sdkQuery',
+        '${snippetWebUrls[widget.lang]}'
+        '?price=${widget.price}&currency=${widget.currency.displayName}$sdkQuery',
       ),
       options: ChromeSafariBrowserClassOptions(
         android: AndroidChromeCustomTabsOptions(
@@ -43,9 +77,9 @@ class TabbyPresentationSnippet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localStrings = getLocalStrings(
-      price: price,
-      currency: currency,
-      lang: lang,
+      price: widget.price,
+      currency: widget.currency,
+      lang: widget.lang,
     );
     return GestureDetector(
       onTap: openWebBrowser,
@@ -53,9 +87,9 @@ class TabbyPresentationSnippet extends StatelessWidget {
         constraints: const BoxConstraints(minWidth: 300, maxWidth: 720),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: backgroundColor,
+          color: widget.backgroundColor,
           border: Border.all(
-            color: borderColor,
+            color: widget.borderColor,
             width: 1,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(4)),
@@ -67,8 +101,8 @@ class TabbyPresentationSnippet extends StatelessWidget {
                 text: TextSpan(
                   text: localStrings[0],
                   style: TextStyle(
-                    color: textColor,
-                    fontFamily: lang == Lang.ar ? 'Arial' : 'Inter',
+                    color: widget.textColor,
+                    fontFamily: widget.lang == Lang.ar ? 'Arial' : 'Inter',
                     fontSize: 15,
                     height: 1.5,
                   ),

@@ -450,3 +450,23 @@ class TransactionStatusResponse {
   final bool isPaid;
   final String? rejectionReason;
 }
+
+class EventProperties {
+  EventProperties({
+    required this.currency,
+    required this.lang,
+    this.installmentsCount,
+  });
+
+  final Currency currency;
+  final Lang lang;
+  final int? installmentsCount;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'currency': currency.displayName,
+      'lang': lang.name,
+      'installments_count': installmentsCount,
+    };
+  }
+}
