@@ -16,6 +16,9 @@ dependencies:
   # Webview
   flutter_inappwebview: ^5.7.1
 
+  # UUID
+  uuid: ^4.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
