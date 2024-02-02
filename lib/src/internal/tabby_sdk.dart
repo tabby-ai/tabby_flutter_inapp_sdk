@@ -108,7 +108,7 @@ class TabbySDK implements TabbyWithRemoteDataSource {
   ) async {
     final data = {
       'anonymousId': _anonymousId,
-      'message_id': uuid.v4(),
+      'messageId': uuid.v4(),
       'properties': {
         'publicKey': _apiKey,
         'platformType': 'merchant app',
@@ -132,7 +132,7 @@ class TabbySDK implements TabbyWithRemoteDataSource {
       },
     };
     if (kDebugMode) {
-      print(jsonEncode(data));
+      print('Tabby SDK logEvent :: ${jsonEncode(data)}');
     }
     try {
       await http.post(
