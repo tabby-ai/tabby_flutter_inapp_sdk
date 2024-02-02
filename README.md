@@ -54,8 +54,7 @@ Feel free to edit descriptions according to your App
 
 ```dart
   TabbySDK().setup(
-    withApiKey: '', // Put here your Api key
-    environment: Environment.production,
+    withApiKey: '', // Put here your Api key, given by the Tabby integrations team
   );
 ```
 
@@ -103,7 +102,7 @@ Feel free to edit descriptions according to your App
   );
 
   final session = await TabbySDK().createSession(TabbyCheckoutPayload(
-    merchantCode: 'ae',
+    merchantCode: 'ae', // pay attention, this might be different for different merchants
     lang: Lang.en,
     payment: mockPayload,
   ));
