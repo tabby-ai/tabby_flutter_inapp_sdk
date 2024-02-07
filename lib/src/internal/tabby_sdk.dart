@@ -68,6 +68,7 @@ class TabbySDK implements TabbyWithRemoteDataSource {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'X-SDK-Version': getVersionHeader(),
         'Authorization': 'Bearer $_apiKey',
       },
       body: jsonEncode(payload.toJson()),
@@ -140,6 +141,7 @@ class TabbySDK implements TabbyWithRemoteDataSource {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
+          'X-SDK-Version': getVersionHeader(),
           'Authorization': 'Basic ${getHeader()}',
         },
         body: jsonEncode(data),

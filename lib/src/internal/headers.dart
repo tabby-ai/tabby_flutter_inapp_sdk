@@ -98,3 +98,7 @@ String getHeader() {
   );
   return header;
 }
+
+String getVersionHeader() {
+  return 'Flutter/1.5.0';
+}
