@@ -1,3 +1,7 @@
+## 1.5.0
+
+- No-breaking change built in widgets usage staticsics
+
 ## 1.4.2
 
 - Fix TabbyPresentationSnippet not displaying updated price
