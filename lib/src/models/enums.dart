@@ -18,6 +18,21 @@ extension CurrencyExt on Currency {
     }
   }
 
+  String get countryName {
+    switch (this) {
+      case Currency.aed:
+        return 'emirates';
+      case Currency.sar:
+        return 'saudi';
+      case Currency.kwd:
+        return 'kuwait';
+      case Currency.bhd:
+        return 'bahrain';
+      case Currency.qar:
+        return 'qatar';
+    }
+  }
+
   int get decimals {
     switch (this) {
       case Currency.aed:
@@ -94,6 +109,15 @@ extension EnvironmentExt on Environment {
         return 'https://api.tabby.ai/';
     }
   }
+
+  String get analyticsHost {
+    switch (this) {
+      case Environment.stage:
+        return 'https://dp-event-collector.tabby.dev/v1/t';
+      case Environment.production:
+        return 'https://dp-event-collector.tabby.ai/v1/t';
+    }
+  }
 }
 
 enum WebViewResult {
@@ -101,4 +125,26 @@ enum WebViewResult {
   authorized,
   rejected,
   expired,
+}
+
+enum AnalyticsEvent {
+  snipperCardRendered, // = 'Snippet Cart Rendered',
+  learnMoreClicked, // = 'Learn More Clicked',
+  learnMorePopUpOpened, // = 'Learn More Pop Up Opened',
+  learnMorePopUpClosed, // = 'Learn More Pop Up Closed',
+}
+
+extension AnalyticsEventExt on AnalyticsEvent {
+  String get name {
+    switch (this) {
+      case AnalyticsEvent.snipperCardRendered:
+        return 'Snippet Cart Rendered';
+      case AnalyticsEvent.learnMoreClicked:
+        return 'Learn More Clicked';
+      case AnalyticsEvent.learnMorePopUpOpened:
+        return 'Learn More Pop Up Opened';
+      case AnalyticsEvent.learnMorePopUpClosed:
+        return 'Learn More Pop Up Closed';
+    }
+  }
 }

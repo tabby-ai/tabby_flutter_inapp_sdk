@@ -1,6 +1,6 @@
 name: tabby_flutter_inapp_sdk
 description: Tabby Flutter SDK
-version: 1.4.2
+version: 1.5.0
 homepage: https://github.com/tabby-ai/tabby_flutter_inapp_sdk
 
 environment:
@@ -11,10 +11,13 @@ dependencies:
     sdk: flutter
 
   # Remote API
-  http: ^0.13.4
+  http: ^1.0.0
 
   # Webview
   flutter_inappwebview: ^5.7.1
+
+  # UUID
+  uuid: ^4.0.0
 
 dev_dependencies:
   flutter_test:
