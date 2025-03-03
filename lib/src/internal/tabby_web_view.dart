@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 const tabbyColor = Color.fromRGBO(62, 237, 191, 1);
@@ -46,6 +49,18 @@ class TabbyWebView extends StatefulWidget {
   }
 }
 
+extension TabbyPermissionResourceType on PermissionResourceType {
+  static Permission? toAndroidPermission(PermissionResourceType value) {
+    if (value == PermissionResourceType.CAMERA) {
+      return Permission.camera;
+    } else if (value == PermissionResourceType.MICROPHONE) {
+      return Permission.microphone;
+    } else {
+      return null;
+    }
+  }
+}
+
 class _TabbyWebViewState extends State<TabbyWebView> {
   final GlobalKey webViewKey = GlobalKey();
   double _progress = 0;
@@ -67,8 +82,37 @@ class _TabbyWebViewState extends State<TabbyWebView> {
             initialUrlRequest:
                 URLRequest(url: WebUri.uri(Uri.parse(widget.webUrl))),
             initialSettings: settings,
-            onProgressChanged:
-                (InAppWebViewController controller, int progress) {
+            onPermissionRequest: (controller, permissionRequest) async {
+              final resources = permissionRequest.resources;
+              final permissions = Platform.isAndroid
+                  ? resources
+                      .map((r) {
+                        final permission =
+                            TabbyPermissionResourceType.toAndroidPermission(r);
+                        return permission;
+                      })
+                      .whereType<Permission>()
+                      .toList()
+                  : [Permission.camera, Permission.microphone];
+              if (permissions.isEmpty) {
+                return PermissionResponse(
+                  action: PermissionResponseAction.GRANT,
+                  resources: resources,
+                );
+              }
+              final statuses = await permissions.request();
+              final isGranted = statuses.values.every((s) => s.isGranted);
+              return PermissionResponse(
+                action: isGranted
+                    ? PermissionResponseAction.GRANT
+                    : PermissionResponseAction.DENY,
+                resources: resources,
+              );
+            },
+            onProgressChanged: (
+              InAppWebViewController controller,
+              int progress,
+            ) {
               setState(() {
                 _progress = progress / 100;
               });
@@ -83,8 +127,10 @@ class _TabbyWebViewState extends State<TabbyWebView> {
             onWebViewCreated: (controller) async {
               controller.addJavaScriptHandler(
                 handlerName: 'tabbyMobileSDK',
-                callback: (message) =>
-                    javaScriptHandler(message, widget.onResult),
+                callback: (message) => javaScriptHandler(
+                  message,
+                  widget.onResult,
+                ),
               );
             },
           ),

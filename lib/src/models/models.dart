@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:tabby_flutter_inapp_sdk/src/internal/fixtures.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
@@ -427,14 +425,12 @@ class TabbyCheckoutPayload {
   final String merchantCode; // 'ae' | 'sa',
   final Lang lang; // 'en' | 'ar,
   final Payment payment;
-  final merchantUrls = Platform.isIOS ? defaultMerchantUrls : null;
 
   Map<String, dynamic> toJson() {
     return {
       'merchant_code': merchantCode,
       'lang': lang.name,
       'payment': payment,
-      'merchant_urls': merchantUrls,
     };
   }
 }

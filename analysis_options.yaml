@@ -32,7 +32,7 @@ analyzer:
     # Stream and not importing dart:async
     # Please see https://github.com/flutter/flutter/pull/24528 for details.
     type_annotate_public_apis: ignore
-    public_member_api_docs: ignore
+    public_member_api_docs: true
     prefer_relative_imports: ignore
     prefer_function_declarations_over_variables: ignore
     prefer_mixin: ignore

@@ -1,4 +1,4 @@
-package com.example.tabby_flutter
+package ai.tabby.flutter_sdk
 
 import io.flutter.embedding.android.FlutterActivity
 
