@@ -35,7 +35,6 @@ platform :ios do
       app_version: app_version_str,
       build_number: build_number_str,
       skip_waiting_for_build_processing: true,
-      # 👇🏻 ipa should be /Users/usr_on_your_machine/merchant-app/build/ios/ipa/TabbyBusinessApp.ipa
       ipa: ENV["IPA_PATH"]
   )
   
