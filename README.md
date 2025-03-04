@@ -9,9 +9,21 @@ Use the Tabby checkout in your Flutter app.
 - Android: `minSdkVersion 17` and add support for `androidx` (see [AndroidX Migration](https://flutter.dev/docs/development/androidx-migration) to migrate an existing app)
 - iOS: `--ios-language swift`, Xcode version `>= 12`
 
-## Getting started
+## 1️⃣ Adding Android and iOS-specific configuration
 
-Add `flutter_inappwebview` as a [dependency in your pubspec.yaml file](https://flutter.io/using-packages/).
+#### Why this is even needed?
+We use `flutter_inappwebview` and `flutter-permission-handler` as a dependencies.
+
+For any clarification and making sure we're not requesting more than we have to, please refer to https://inappwebview.dev/docs/intro/#enable-camera-for-html-inputs
+
+In order to be able to use camera in a webview, for example, for taking images through <input type="file" accept="image/*" capture> HTML tag, you need to ask camera permissionand also a microphone permission. Tabby SDK will handle it for you and pass permissions request from a webview to the native side, but you need to add these permissions to your Android and iOS-specific files
+
+Tabby might ask user to go through a verification process, which requires live check with camera and and that's why we need to ask for camera permission.
+
+Camera permission is needed to take ID card photo for KYC process.
+
+To enable WebView to use the camera for KYC process, you need to:
+
 
 ## On iOS please make sure you've added in your `Info.plist`
 
@@ -19,24 +31,54 @@ Feel free to edit descriptions according to your App
 
 ```xml
 <key>NSCameraUsageDescription</key>
-<string>This allows Tabby to take a photo</string>
-<key>NSPhotoLibraryUsageDescription</key>
-<string>This allows Tabby to select a photo</string>
+<string>This allows Tabby to take a photo of an ID</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>This allows Tabby to perform a live check during a KYC process</string>
 ```
+
+While the permissions are being requested during runtime, you'll still need to tell the OS which permissions your app might potentially use. That requires adding permission configuration to iOS-specific files.
+
+The `permission_handler` plugin use macros to control whether a permission is enabled.
+
+## Please also make sure you've edited your `post_install` script in your app `Podfile` to include the following:
+
+```ruby
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
+
+    target.build_configurations.each do |config|
+      # You can remove unused permissions here
+      # for more information: https://github.com/Baseflow/flutter-permission-handler/blob/main/permission_handler_apple/ios/Classes/PermissionHandlerEnums.h
+      # e.g. when you don't need camera permission, just add 'PERMISSION_CAMERA=0'
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+        '$(inherited)',
+        ## dart: PermissionGroup.camera
+        'PERMISSION_CAMERA=1',
+        ## dart: PermissionGroup.microphone
+        'PERMISSION_MICROPHONE=1',
+      ]
+    end
+  end
+end
+```
+
+For any clarification, please refer to the [permission_handler](https://pub.dev/packages/permission_handler) plugin documentation.
 
 ## On Android please make sure you've added in your `AndroidManifest.xml`
 
 ```xml
-<uses-feature
-    android:name="android.hardware.camera"
-    android:required="false" />
 
 <uses-permission android:name="android.permission.CAMERA"/>
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
 <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+<uses-permission android:name="android.permission.VIDEO_CAPTURE" />
+<uses-permission android:name="android.permission.AUDIO_CAPTURE" />
+
 ```
 
-## Usage
+
+## 2️⃣ Usage
 
 1. You should initialise Tabby SDK. We recommend to do it in `main.dart` file:
 
