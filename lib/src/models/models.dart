@@ -1,4 +1,3 @@
-import 'package:tabby_flutter_inapp_sdk/src/internal/fixtures.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 import './enums.dart';

@@ -1,0 +1,5 @@
+for_platform :ios do
+  for_lane :upload_testflight do
+    itc_team_id "121945547"
+  end
+end

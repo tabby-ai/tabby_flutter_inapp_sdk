@@ -65,3 +65,10 @@ build/
 example/android/.settings/
 example/android/.project
 example/ios/Flutter/flutter_export_environment.sh
+
+# FVM Version Cache
+.fvm/
+
+# Secrets
+.secure_files/
+scripts/.env_version
