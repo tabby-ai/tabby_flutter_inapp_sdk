@@ -15,6 +15,6 @@ build_ios:
 	make env
 	sh scripts/build_ios.sh
 
-build:
+build_both:
 	make build_android
 	make build_ios
