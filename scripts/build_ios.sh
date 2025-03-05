@@ -7,7 +7,7 @@ make pg
 
 cd example
 
-# fvm flutter build ipa --release
+fvm flutter build ipa --release
 
 echo "✅ Build finished"
 
