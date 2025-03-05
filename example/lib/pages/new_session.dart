@@ -13,13 +13,17 @@ class NewSession extends StatefulWidget {
 class _NewSessionState extends State<NewSession> {
   String _status = 'idle';
   TabbySession? session;
+
   late Lang lang;
+
   String _amount = '340';
   late TextEditingController _amountController;
   String _email = 'id.success@tabby.ai';
   late TextEditingController _emailController;
   String _phone = '+971500000001';
   late TextEditingController _phoneController;
+  String _merchantCode = 'ae';
+  late TextEditingController _merchantCodeController;
   Currency _selectedCurrency = Currency.aed;
 
   void _setStatus(String newStatus) {
@@ -34,6 +38,7 @@ class _NewSessionState extends State<NewSession> {
     _amountController = TextEditingController(text: _amount);
     _emailController = TextEditingController(text: _email);
     _phoneController = TextEditingController(text: _phone);
+    _merchantCodeController = TextEditingController(text: _merchantCode);
     WidgetsBinding.instance.addPostFrameCallback((_) => getCurrentLang());
   }
 
@@ -57,7 +62,7 @@ class _NewSessionState extends State<NewSession> {
       _setStatus('pending');
 
       final s = await TabbySDK().createSession(TabbyCheckoutPayload(
-        merchantCode: 'ae',
+        merchantCode: _merchantCode,
         lang: lang,
         payment: createMockPayload(
           amount: _amount,
@@ -182,6 +187,12 @@ class _NewSessionState extends State<NewSession> {
     });
   }
 
+  void _updateMerchantCode(String newMerchantCode) {
+    setState(() {
+      _merchantCode = newMerchantCode;
+    });
+  }
+
   void _updateCurrency(Currency? newCurrency) {
     if (newCurrency != null) {
       setState(() {
@@ -192,6 +203,11 @@ class _NewSessionState extends State<NewSession> {
 
   @override
   Widget build(BuildContext context) {
+    final isReadyToSubmit = _amount.isNotEmpty &&
+        _email.isNotEmpty &&
+        _phone.isNotEmpty &&
+        _merchantCode.isNotEmpty;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -292,6 +308,22 @@ class _NewSessionState extends State<NewSession> {
                   onChanged: _updatePhone,
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24.0),
+                child: TextField(
+                  controller: _merchantCodeController,
+                  decoration: InputDecoration(
+                    labelText: 'Merchant Code',
+                    hintText: 'Enter merchant code',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    prefixIcon: const Icon(Icons.abc),
+                  ),
+                  keyboardType: TextInputType.text,
+                  onChanged: _updateMerchantCode,
+                ),
+              ),
               const Spacer(),
               session == null
                   ? ElevatedButton(
@@ -305,7 +337,11 @@ class _NewSessionState extends State<NewSession> {
                         foregroundColor: Colors.white,
                         shadowColor: Colors.transparent,
                       ),
-                      onPressed: _status == 'pending' ? noop : createSession,
+                      onPressed: !isReadyToSubmit
+                          ? null
+                          : _status == 'pending'
+                              ? noop
+                              : createSession,
                       child: _status == 'pending'
                           ? const SizedBox(
                               width: 24.0, // Set desired width
