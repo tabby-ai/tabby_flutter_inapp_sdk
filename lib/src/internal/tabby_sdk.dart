@@ -67,7 +67,7 @@ class TabbySDK implements TabbyWithRemoteDataSource {
   Future<TabbySession> createSession(TabbyCheckoutPayload payload) async {
     checkSetup();
     final response = await http.post(
-      Uri.parse('${_host}api/v2/checkout'),
+      Uri.parse('$_host/api/v2/checkout'),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
