@@ -177,6 +177,25 @@ Also you can use TabbyWebView as inline widget on your page:
         onResult: (WebViewResult resultCode) {
           print(resultCode.name);
           // TODO: Process resultCode
+          switch (resultCode) {
+            case WebViewResult.authorized:
+            // Do something when Tabby authorized customer:
+            // you might want to navigate back to Home screen or any Order Completion screen,
+            // do any fetching from your backend,
+            // or notify user on successfull order
+              break;
+            case WebViewResult.close:
+            // Do something else when customer closes Tabby checkout
+              break;
+            case WebViewResult.expired:
+            // Do something else when session expired
+            // We strongly recommend creating a new session by calling
+            // await Tabby.createSession(myTestPayment)
+              break;
+            case WebViewResult.rejected:
+            // Do something else when Tabby rejected customer due to scoring, KYC, etc.
+              break;
+          }
         },
       ),
     );
@@ -200,6 +219,6 @@ For show `TabbyPresentationSnippet` you can add as inline widget on your page:
   )
 ```
 
-## Example
+## Example project
 
 You can also check the [example project](https://github.com/tabby-ai/tabby-flutter-sdk/tree/master/example).
