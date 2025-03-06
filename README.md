@@ -68,13 +68,25 @@ For any clarification, please refer to the [permission_handler](https://pub.dev/
 ## On Android please make sure you've added in your `AndroidManifest.xml`
 
 ```xml
-
 <uses-permission android:name="android.permission.CAMERA"/>
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
 <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 <uses-permission android:name="android.permission.VIDEO_CAPTURE" />
 <uses-permission android:name="android.permission.AUDIO_CAPTURE" />
+```
 
+Also, you need to add the following code inside the <application> tag of your AndroidManifest.xml file:
+
+```xml
+<provider
+    android:name="com.pichillilorenzo.flutter_inappwebview_android.InAppWebViewFileProvider"
+    android:authorities="${applicationId}.flutter_inappwebview_android.fileprovider"
+    android:exported="false"
+    android:grantUriPermissions="true">
+    <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/provider_paths" />
+</provider>
 ```
 
 
