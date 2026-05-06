@@ -91,8 +91,9 @@ class _TabbyProductPageSnippetState extends State<TabbyProductPageSnippet> {
 
   @override
   void initState() {
+    final uri = Uri.parse(_buildAddress());
     webViewController = createBaseWebViewController(messageHandler);
-    webViewController.loadRequest(Uri.parse(_buildAddress()));
+    webViewController.loadRequest(uri);
     super.initState();
   }
 
@@ -105,7 +106,8 @@ class _TabbyProductPageSnippetState extends State<TabbyProductPageSnippet> {
         oldWidget.merchantCode != widget.merchantCode ||
         oldWidget.apiKey != widget.apiKey ||
         oldWidget.installmentsCount != widget.installmentsCount) {
-      webViewController.loadRequest(Uri.parse(_buildAddress()));
+      final uri = Uri.parse(_buildAddress());
+      webViewController.loadRequest(uri);
     }
   }
 
