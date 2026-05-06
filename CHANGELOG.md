@@ -1,3 +1,12 @@
+# 2.0.0
+- ❗ Breaking change: `TabbySDK().setup(...)` is now `Future<void>` and must be awaited. Partners must update their integration (this is really an easy todo).
+- 🆕 SDK now bootstraps sharded base URLs from `POST /api/v1/sdk/config` during `setup()`. Per-request hosts are resolved by `Currency` (e.g. `Currency.sar` is routed to KSA-resident endpoints) with a `default` fallback.
+- New public types: `SdkConfig`, `SdkEndpoints`.
+- Removed `TabbySDK().widgetsBaseUrl` getter (was currency-agnostic). Use `widgetsBaseUrlFor(Currency)` if you need direct access to the resolved widgets base URL.
+- Removed `Environment.widgetsHost`; renamed `Environment.host` → `Environment.bootstrapApiBaseUrl` (used only for the bootstrap call).
+- The bootstrap call is merchant-agnostic and does not include the partner `Authorization` header; subsequent calls (e.g. `createSession`) continue to send `Authorization: Bearer <apiKey>`.
+- Hard-fail on bootstrap failure: `setup()` propagates `ServerException` for non-200 responses, `FormatException` for malformed payloads, and transport errors are passed through unchanged. No retry, no fallback to embedded URLs, no on-disk caching.
+
 # 1.11.0
 - [Android] Resolved issue of user sometimes unable to attach files during the checkout
 

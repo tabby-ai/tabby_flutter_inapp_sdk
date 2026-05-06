@@ -100,5 +100,5 @@ String getHeader() {
 }
 
 String getVersionHeader() {
-  return 'Flutter/1.12.0';
+  return 'Flutter/2.0.0';
 }

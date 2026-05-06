@@ -158,4 +158,160 @@ void main() {
       );
     });
   });
+
+  group('TabbySDK.setup failure modes', () {
+    test('throws ServerException when bootstrap returns non-200', () async {
+      TabbySDK().resetForTest();
+      TabbySDK().httpClientForTesting =
+          MockClient((_) async => http.Response('boom', 500));
+
+      expect(
+        TabbySDK().setup(
+          withApiKey: 'pk_test',
+          environment: Environment.production,
+        ),
+        throwsA(isA<ServerException>()),
+      );
+    });
+
+    test('throws FormatException when bootstrap body is not valid JSON',
+        () async {
+      TabbySDK().resetForTest();
+      TabbySDK().httpClientForTesting =
+          MockClient((_) async => http.Response('not-json', 200));
+
+      expect(
+        TabbySDK().setup(
+          withApiKey: 'pk_test',
+          environment: Environment.production,
+        ),
+        throwsA(isA<FormatException>()),
+      );
+    });
+
+    test('throws FormatException when bootstrap body is missing default key',
+        () async {
+      TabbySDK().resetForTest();
+      TabbySDK().httpClientForTesting = MockClient(
+        (_) async => http.Response('{"SAR":{"endpoints":{}}}', 200),
+      );
+
+      expect(
+        TabbySDK().setup(
+          withApiKey: 'pk_test',
+          environment: Environment.production,
+        ),
+        throwsA(isA<FormatException>()),
+      );
+    });
+
+    test('propagates transport error (e.g. SocketException) unchanged',
+        () async {
+      TabbySDK().resetForTest();
+      TabbySDK().httpClientForTesting = MockClient((_) async {
+        throw const _FakeSocketException('boom');
+      });
+
+      expect(
+        TabbySDK().setup(
+          withApiKey: 'pk_test',
+          environment: Environment.production,
+        ),
+        throwsA(isA<_FakeSocketException>()),
+      );
+    });
+
+    test('throws before any HTTP call when withApiKey is empty', () async {
+      TabbySDK().resetForTest();
+      var hits = 0;
+      TabbySDK().httpClientForTesting = MockClient((_) async {
+        hits++;
+        return http.Response(_validConfigJson, 200);
+      });
+
+      expect(
+        TabbySDK().setup(
+          withApiKey: '',
+          environment: Environment.production,
+        ),
+        throwsA(predicate(
+            (Object e) => e.toString().contains('public key cannot be empty'))),
+      );
+      // Allow async micro-task to settle without HTTP being called.
+      await Future<void>.delayed(Duration.zero);
+      expect(hits, 0);
+    });
+  });
+
+  group('TabbySDK.setup re-invocation', () {
+    test(
+        'replaces stored config on a second setup with a different environment',
+        () async {
+      TabbySDK().resetForTest();
+
+      const firstJson = '''
+{
+  "default": {
+    "endpoints": {
+      "checkoutApiBaseUrl": "https://api.tabby.ai",
+      "widgetsBaseUrl": "https://widgets.tabby.ai"
+    }
+  }
+}
+''';
+      const secondJson = '''
+{
+  "default": {
+    "endpoints": {
+      "checkoutApiBaseUrl": "https://api.tabby.dev",
+      "widgetsBaseUrl": "https://widgets.tabby.dev"
+    }
+  }
+}
+''';
+
+      String? bootstrapHost;
+      var bootstrapHits = 0;
+      final responses = <String>[firstJson, secondJson];
+      final captured = <http.Request>[];
+      TabbySDK().httpClientForTesting = MockClient((request) async {
+        if (request.url.path == '/api/v1/sdk/config') {
+          bootstrapHost = request.url.host;
+          bootstrapHits++;
+          return http.Response(responses.removeAt(0), 200);
+        }
+        captured.add(request);
+        return http.Response('', 500);
+      });
+
+      await TabbySDK().setup(
+        withApiKey: 'pk_test',
+        environment: Environment.production,
+      );
+      expect(bootstrapHost, 'api.tabby.ai');
+
+      await TabbySDK().setup(
+        withApiKey: 'pk_test',
+        environment: Environment.staging,
+      );
+      expect(bootstrapHost, 'api.tabby.dev');
+      expect(bootstrapHits, 2);
+
+      try {
+        await TabbySDK().createSession(_payloadWithCurrency(Currency.aed));
+      } catch (_) {}
+
+      expect(captured, hasLength(1));
+      expect(captured.single.url.toString(),
+          'https://api.tabby.dev/api/v2/checkout');
+    });
+  });
+}
+
+class _FakeSocketException implements Exception {
+  const _FakeSocketException(this.message);
+  final String message;
+
+  @override
+  String toString() => 'SocketException: $message';
 }

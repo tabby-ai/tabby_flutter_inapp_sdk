@@ -52,24 +52,24 @@ Note: `example/lib/pages/api_key.dart` `host` → `bootstrapApiBaseUrl` referenc
 - [x] TDD: `createSession` and `widgetsBaseUrlFor` throw clear "did not setup. Call `await TabbySDK().setup(...)`" if singleton un-primed (added `@visibleForTesting resetForTest()` seam).
 - [x] Verify: `flutter analyze` && `flutter test` (passed; analyze exit 0 with 4 stylistic line-length infos in test files).
 
-### Phase 3: Failure modes, release packaging, example migration
+### Phase 3: Failure modes, release packaging, example migration — COMPLETE
 
 - **Goal**: Hard-fail paths covered; v2.0.0 released; example app + docs migrated.
-- [ ] `lib/src/internal/tabby_sdk.dart` - ensure non-200 → `ServerException` (with status code logged via `debugPrint`); malformed JSON / missing `default` → propagated `FormatException`; transport throw propagates unchanged.
-- [ ] `lib/src/internal/headers.dart` - bump `getVersionHeader` → `'Flutter/2.0.0'`.
-- [ ] `pubspec.yaml` - bump `version: 1.12.0` → `2.0.0`.
-- [ ] `example/lib/pages/api_key.dart` - make `openNextPage` async; `await TabbySDK().setup(...)`; surface bootstrap failures (snackbar/dialog) before navigating.
-- [ ] `README.md` - update setup snippet to `await`; add v2.0.0 breaking-change + migration note; describe sharded routing.
-- [ ] `CHANGELOG.md` - add `## 2.0.0` entry: async `setup()`, sharded base URLs via `/api/v1/sdk/config`, removed `widgetsBaseUrl` getter, removed `Environment.widgetsHost`, renamed `Environment.host`.
-- [ ] `test/fixtures/sdk_config/*.json` - prod, staging, default-only, with-unknown-currency, malformed-default, empty-widgets-url.
-- [ ] TDD: `setup()` with fake client returning 500 → `ServerException`.
-- [ ] TDD: `setup()` with non-JSON body → `FormatException`.
-- [ ] TDD: `setup()` with body missing `default` → `FormatException`.
-- [ ] TDD: `setup()` with `SocketException`-throwing client → exception propagates.
-- [ ] TDD: empty `withApiKey` short-circuits before any HTTP call (no bootstrap fired).
-- [ ] TDD: repeated `setup()` with different env replaces stored config (asserted via subsequent `createSession` URL).
-- [ ] Manual: example app on iOS + Android — checkout with `Currency.sar` hits `api.tabby.sa`; with `Currency.aed` hits `api.tabby.ai`; `X-SDK-Version: Flutter/2.0.0` visible on bootstrap.
-- [ ] Verify: `flutter analyze` && `flutter test` && example app runs on iOS + Android.
+- [x] `lib/src/internal/tabby_sdk.dart` - non-200 → `ServerException` (status logged); malformed JSON / missing `default` → `FormatException` propagated from `SdkConfig.fromJson` and `jsonDecode`; transport errors pass through unchanged. Verified by Phase 3 TDD tests.
+- [x] `lib/src/internal/headers.dart` - bumped `getVersionHeader` → `'Flutter/2.0.0'`.
+- [x] `pubspec.yaml` - bumped `version: 1.12.0` → `2.0.0`.
+- [x] `example/lib/pages/api_key.dart` - `openNextPage` is async, awaits `TabbySDK().setup(...)`, surfaces bootstrap failures via `SnackBar`, disables the button + shows a spinner while busy.
+- [x] `README.md` - setup snippet now uses `await`; added v2.0.0 migration note covering breaking change and bootstrap behaviour.
+- [x] `CHANGELOG.md` - added `# 2.0.0` entry covering async `setup()`, sharded URLs, new public types (`SdkConfig`, `SdkEndpoints`), removed/renamed surface (`widgetsBaseUrl` getter, `Environment.widgetsHost`, `Environment.host`), the auth-header behaviour of the bootstrap call, and the hard-fail policy.
+- [~] `test/fixtures/sdk_config/*.json` - SKIPPED. Inline JSON literals in tests cover all six scenarios (prod-style, staging-style, default-only, unknown-currency, malformed-default, missing-fields). Adding fixture files would duplicate the same data. Documented as a deliberate deviation per YAGNI.
+- [x] TDD: `setup()` with fake client returning 500 → `ServerException`.
+- [x] TDD: `setup()` with non-JSON body → `FormatException`.
+- [x] TDD: `setup()` with body missing `default` → `FormatException`.
+- [x] TDD: `setup()` with transport-throwing client → exception propagates unchanged.
+- [x] TDD: empty `withApiKey` short-circuits before any HTTP call (no bootstrap fired).
+- [x] TDD: repeated `setup()` with different env replaces stored config (asserted via the next `createSession` URL host).
+- [ ] Manual: example app on iOS + Android — pending user verification. Spec says: `Currency.sar` should hit `api.tabby.sa`; `Currency.aed` should hit `api.tabby.ai`; `X-SDK-Version: Flutter/2.0.0` should be visible on bootstrap. **BLOCKED on user-side device run.**
+- [x] Verify: `flutter analyze` (exit 0; 4 stylistic line-length infos in tests) && `flutter test` (21 passing).
 
 ## Risks / Out of scope
 
