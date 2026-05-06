@@ -26,10 +26,22 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
           ? Environment.staging
           : Environment.production;
   String _apiKey = kDebugMode ? _preConfiguredApiKey : '';
+  bool _busy = false;
 
-  void openNextPage() {
-    TabbySDK().setup(withApiKey: _apiKey, environment: _env);
-    Navigator.pushNamed(context, '/home');
+  Future<void> openNextPage() async {
+    setState(() => _busy = true);
+    try {
+      await TabbySDK().setup(withApiKey: _apiKey, environment: _env);
+      if (!mounted) return;
+      Navigator.pushNamed(context, '/home');
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Tabby setup failed: $e')));
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
   }
 
   @override
@@ -120,8 +132,20 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
                   foregroundColor: Colors.white,
                   shadowColor: Colors.transparent,
                 ),
-                onPressed: _apiKey.isNotEmpty ? openNextPage : null,
-                child: const Text('Set API Key'),
+                onPressed: (_apiKey.isNotEmpty && !_busy) ? openNextPage : null,
+                child:
+                    _busy
+                        ? const SizedBox(
+                          height: 18,
+                          width: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          ),
+                        )
+                        : const Text('Set API Key'),
               ),
             ),
             const Spacer(),

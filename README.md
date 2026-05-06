@@ -77,10 +77,13 @@ For any clarification, please refer to the [permission_handler](https://pub.dev/
 1. You should initialise Tabby SDK. We recommend to do it in `main.dart` file:
 
 ```dart
-  TabbySDK().setup(
+  // ⚠️ Since 2.0.0, setup() is async. Await it before using any other SDK API.
+  await TabbySDK().setup(
     withApiKey: '', // Put here your Api key, given by the Tabby integrations team
   );
 ```
+
+> **Migrating from 1.x:** `TabbySDK().setup(...)` now returns a `Future<void>` because the SDK fetches sharded base URLs from `/api/v1/sdk/config` during initialisation. Add `await` in front of the call and surface failures (network errors, malformed config) before navigating into checkout-dependent screens — that's the whole migration.
 
 2. Create checkout session:
 
