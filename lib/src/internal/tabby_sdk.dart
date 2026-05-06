@@ -146,6 +146,11 @@ class TabbySDK implements TabbyWithRemoteDataSource {
   }
 
   @visibleForTesting
+  void resetForTest() {
+    _ready = false;
+  }
+
+  @visibleForTesting
   void primeConfigForTest({
     required String apiKey,
     required Environment environment,

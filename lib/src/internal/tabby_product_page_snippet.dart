@@ -5,6 +5,27 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+String buildSnippetUrl({
+  required String widgetsBaseUrl,
+  required double price,
+  required Currency currency,
+  required String publicKey,
+  required String merchantCode,
+  required Lang lang,
+  required int installmentsCount,
+}) {
+  final trimmed = widgetsBaseUrl.endsWith('/')
+      ? widgetsBaseUrl.substring(0, widgetsBaseUrl.length - 1)
+      : widgetsBaseUrl;
+  return '$trimmed/tabby-promo.html'
+      '?price=$price'
+      '&currency=${currency.displayName}'
+      '&publicKey=$publicKey'
+      '&merchantCode=$merchantCode'
+      '&lang=${lang.displayName}'
+      '&installmentsCount=$installmentsCount';
+}
+
 class TabbyProductPageSnippet extends StatefulWidget {
   const TabbyProductPageSnippet({
     required this.price,
@@ -58,18 +79,15 @@ class _TabbyProductPageSnippetState extends State<TabbyProductPageSnippet> {
     }
   }
 
-  String _buildAddress() {
-    final base = TabbySDK().widgetsBaseUrlFor(widget.currency);
-    final trimmed =
-        base.endsWith('/') ? base.substring(0, base.length - 1) : base;
-    return '$trimmed/tabby-promo.html'
-        '?price=${widget.price}'
-        '&currency=${widget.currency.displayName}'
-        '&publicKey=${widget.apiKey}'
-        '&merchantCode=${widget.merchantCode}'
-        '&lang=${widget.lang.displayName}'
-        '&installmentsCount=${widget.installmentsCount}';
-  }
+  String _buildAddress() => buildSnippetUrl(
+        widgetsBaseUrl: TabbySDK().widgetsBaseUrlFor(widget.currency),
+        price: widget.price,
+        currency: widget.currency,
+        publicKey: widget.apiKey,
+        merchantCode: widget.merchantCode,
+        lang: widget.lang,
+        installmentsCount: widget.installmentsCount,
+      );
 
   @override
   void initState() {
