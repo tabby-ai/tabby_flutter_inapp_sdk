@@ -58,17 +58,23 @@ class _TabbyProductPageSnippetState extends State<TabbyProductPageSnippet> {
     }
   }
 
-  @override
-  void initState() {
-    final address = '${TabbySDK().widgetsBaseUrl}'
+  String _buildAddress() {
+    final base = TabbySDK().widgetsBaseUrlFor(widget.currency);
+    final trimmed =
+        base.endsWith('/') ? base.substring(0, base.length - 1) : base;
+    return '$trimmed/tabby-promo.html'
         '?price=${widget.price}'
         '&currency=${widget.currency.displayName}'
         '&publicKey=${widget.apiKey}'
         '&merchantCode=${widget.merchantCode}'
         '&lang=${widget.lang.displayName}'
         '&installmentsCount=${widget.installmentsCount}';
+  }
+
+  @override
+  void initState() {
     webViewController = createBaseWebViewController(messageHandler);
-    webViewController.loadRequest(Uri.parse(address));
+    webViewController.loadRequest(Uri.parse(_buildAddress()));
     super.initState();
   }
 
@@ -81,14 +87,7 @@ class _TabbyProductPageSnippetState extends State<TabbyProductPageSnippet> {
         oldWidget.merchantCode != widget.merchantCode ||
         oldWidget.apiKey != widget.apiKey ||
         oldWidget.installmentsCount != widget.installmentsCount) {
-      final address = '${TabbySDK().widgetsBaseUrl}'
-          '?price=${widget.price}'
-          '&currency=${widget.currency.displayName}'
-          '&publicKey=${widget.apiKey}'
-          '&merchantCode=${widget.merchantCode}'
-          '&lang=${widget.lang.displayName}'
-          '&installmentsCount=${widget.installmentsCount}';
-      webViewController.loadRequest(Uri.parse(address));
+      webViewController.loadRequest(Uri.parse(_buildAddress()));
     }
   }
 

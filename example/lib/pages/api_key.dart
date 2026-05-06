@@ -82,7 +82,9 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
                       Environment.values.map((Environment e) {
                         return DropdownMenuItem<Environment>(
                           value: e,
-                          child: Text("${e.name.toUpperCase()} (${e.host})"),
+                          child: Text(
+                            "${e.name.toUpperCase()} (${e.bootstrapApiBaseUrl})",
+                          ),
                         );
                       }).toList(),
                   onChanged: _updateEnvironment,
