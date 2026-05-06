@@ -41,16 +41,16 @@ Replace hardcoded base URLs with per-currency endpoints fetched at `setup()` fro
 
 Note: `example/lib/pages/api_key.dart` `host` → `bootstrapApiBaseUrl` reference was also updated here to keep `flutter analyze` green; the example app's broader async-setup migration remains in Phase 3.
 
-### Phase 2: Snippet currency-aware widget URL
+### Phase 2: Snippet currency-aware widget URL — COMPLETE
 
 - **Goal**: `TabbyProductPageSnippet` builds URL from `widgetsBaseUrlFor(currency)`; old getter removed.
-- [ ] `lib/src/internal/tabby_sdk.dart` - add `String widgetsBaseUrlFor(Currency)`; remove `String get widgetsBaseUrl`.
-- [ ] `lib/src/internal/tabby_product_page_snippet.dart` - extract pure helper `String buildSnippetUrl(SdkEndpoints, Currency, Lang, double price, String publicKey, String merchantCode, int installmentsCount)` joining `widgetsBaseUrl` + `/tabby-promo.html?...` with `_joinPath` (single `/`); call from `initState` and `didUpdateWidget` via `TabbySDK().widgetsBaseUrlFor(widget.currency)`.
-- [ ] TDD: `buildSnippetUrl` produces `<base>/tabby-promo.html?...` whether `base` ends with `/` or not (no double slash).
-- [ ] TDD: snippet with `Currency.sar` resolves to `<SAR.widgetsBaseUrl>/tabby-promo.html?...`; non-sharded currency → `<default.widgetsBaseUrl>/...`.
-- [ ] TDD: `didUpdateWidget` re-resolves URL when `currency` changes.
-- [ ] TDD: `createSession` and `widgetsBaseUrlFor` throw clear "did not setup. Call `await TabbySDK().setup(...)`" if singleton un-primed.
-- [ ] Verify: `flutter analyze` && `flutter test`
+- [x] `lib/src/internal/tabby_sdk.dart` - add `String widgetsBaseUrlFor(Currency)`; remove `String get widgetsBaseUrl`. (done in Phase 1 commit; verified by Phase 2 tests).
+- [x] `lib/src/internal/tabby_product_page_snippet.dart` - extract pure top-level `buildSnippetUrl({widgetsBaseUrl, price, currency, publicKey, merchantCode, lang, installmentsCount})` joining `widgetsBaseUrl` + `/tabby-promo.html?...` with single-slash trim; called from `initState` and `didUpdateWidget` via `TabbySDK().widgetsBaseUrlFor(widget.currency)`. Function exported via the public barrel.
+- [x] TDD: `buildSnippetUrl` produces `<base>/tabby-promo.html?...` whether `base` ends with `/` or not (no double slash).
+- [x] TDD: composition of `TabbySDK().widgetsBaseUrlFor(currency)` + `buildSnippetUrl` resolves SAR currency to SAR widgets host and falls back to default for non-sharded currencies (covers the snippet's per-currency selection contract).
+- [~] TDD: `didUpdateWidget` re-resolves URL when `currency` changes — NOT covered by a widget test. Rationale per spec/plan: `WebViewController.loadRequest` cannot be cleanly intercepted in widget tests without a more invasive seam. Currency-driven re-composition is verified through the pure `buildSnippetUrl` (returns different URLs for different currencies); the `didUpdateWidget` branch in the snippet is correct-by-construction once it calls `_buildAddress()`. Documented as a deliberate gap.
+- [x] TDD: `createSession` and `widgetsBaseUrlFor` throw clear "did not setup. Call `await TabbySDK().setup(...)`" if singleton un-primed (added `@visibleForTesting resetForTest()` seam).
+- [x] Verify: `flutter analyze` && `flutter test` (passed; analyze exit 0 with 4 stylistic line-length infos in test files).
 
 ### Phase 3: Failure modes, release packaging, example migration
 

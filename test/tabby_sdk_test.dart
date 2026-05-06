@@ -132,4 +132,30 @@ void main() {
           'https://api.tabby.ai/api/v2/checkout');
     });
   });
+
+  group('TabbySDK setup-required guards', () {
+    test('createSession throws "did not setup" when singleton is un-primed',
+        () async {
+      TabbySDK().resetForTest();
+
+      expect(
+        () => TabbySDK().createSession(_payloadWithCurrency(Currency.aed)),
+        throwsA(predicate(
+          (Object e) => e.toString().contains('did not setup'),
+        )),
+      );
+    });
+
+    test('widgetsBaseUrlFor throws "did not setup" when singleton is un-primed',
+        () {
+      TabbySDK().resetForTest();
+
+      expect(
+        () => TabbySDK().widgetsBaseUrlFor(Currency.aed),
+        throwsA(predicate(
+          (Object e) => e.toString().contains('did not setup'),
+        )),
+      );
+    });
+  });
 }
