@@ -10,14 +10,19 @@ const uuid = Uuid();
 
 abstract class TabbyWithRemoteDataSource {
   /// Initialise Tabby API.
-  void setup({
+  ///
+  /// Fetches the sharded SDK configuration from `/api/v1/sdk/config` before
+  /// returning. Throws on network or parse failure; no fallback to embedded
+  /// URLs.
+  Future<void> setup({
     required String withApiKey,
     Environment environment = Environment.production,
   });
 
-  /// Calls the https://api.tabby.ai/api/v2/checkout endpoint.
+  /// Calls the `<checkoutApiBaseUrl>/api/v2/checkout` endpoint, where the base
+  /// URL is resolved per `payload.payment.currency` from the loaded config.
   ///
-  /// Throws a [ServerException] for all error codes.
+  /// Throws a [ServerException] for all non-200 responses.
   Future<TabbySession> createSession(TabbyCheckoutPayload payload);
 }
 
@@ -34,39 +39,71 @@ class TabbySDK implements TabbyWithRemoteDataSource {
   static const String rejectionTextAr = tabbyRejectionTextAr;
   static const String jsBridgeName = 'tabbyMobileSDK';
 
-  late final String _apiKey;
-  late final String _host;
-  late final String _widgetsHost;
+  late String _apiKey;
+  late Environment _environment;
+  late SdkConfig _config;
+  bool _ready = false;
+
+  http.Client _httpClient = http.Client();
+
+  @visibleForTesting
+  set httpClientForTesting(http.Client client) => _httpClient = client;
 
   String get publicKey => _apiKey;
-  String get widgetsBaseUrl => _widgetsHost;
+
+  String widgetsBaseUrlFor(Currency currency) {
+    checkSetup();
+    return _config.endpointsFor(currency).widgetsBaseUrl;
+  }
 
   @override
-  void setup({
+  Future<void> setup({
     required String withApiKey,
     Environment environment = Environment.production,
-  }) {
+  }) async {
     if (withApiKey.isEmpty) {
       throw 'Tabby public key cannot be empty';
     }
     _apiKey = withApiKey;
-    _host = environment.host;
-    _widgetsHost = environment.widgetsHost;
+    _environment = environment;
+    _config = await _fetchSdkConfig();
+    _ready = true;
+  }
+
+  Future<SdkConfig> _fetchSdkConfig() async {
+    final url = '${_environment.bootstrapApiBaseUrl}/api/v1/sdk/config';
+    final response = await _httpClient.post(
+      Uri.parse(url),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-SDK-Version': getVersionHeader(),
+      },
+      body: jsonEncode(<String, dynamic>{}),
+    );
+
+    debugPrint('sdk config status: ${response.statusCode}');
+    if (response.statusCode != 200) {
+      debugPrint(response.body);
+      throw ServerException();
+    }
+    return SdkConfig.fromJson(
+        jsonDecode(response.body) as Map<String, dynamic>);
   }
 
   void checkSetup() {
-    try {
-      _apiKey.isNotEmpty && _host.isNotEmpty;
-    } catch (e) {
-      throw 'TabbySDK did not setup.\nCall TabbySDK().setup in main.dart';
+    if (!_ready) {
+      throw 'TabbySDK did not setup.\n'
+          'Call `await TabbySDK().setup(...)` in main.dart';
     }
   }
 
   @override
   Future<TabbySession> createSession(TabbyCheckoutPayload payload) async {
     checkSetup();
-    final response = await http.post(
-      Uri.parse('$_host/api/v2/checkout'),
+    final endpoints = _config.endpointsFor(payload.payment.currency);
+    final response = await _httpClient.post(
+      Uri.parse('${endpoints.checkoutApiBaseUrl}/api/v2/checkout'),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -106,5 +143,17 @@ class TabbySDK implements TabbyWithRemoteDataSource {
       debugPrint(response.body);
       throw ServerException();
     }
+  }
+
+  @visibleForTesting
+  void primeConfigForTest({
+    required String apiKey,
+    required Environment environment,
+    required SdkConfig config,
+  }) {
+    _apiKey = apiKey;
+    _environment = environment;
+    _config = config;
+    _ready = true;
   }
 }

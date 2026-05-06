@@ -7,3 +7,4 @@ export './src/internal/utils.dart';
 export './src/models/enums.dart';
 export './src/models/errors.dart';
 export './src/models/models.dart';
+export './src/models/sdk_config.dart';

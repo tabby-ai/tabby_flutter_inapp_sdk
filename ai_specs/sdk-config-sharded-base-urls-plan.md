@@ -21,23 +21,25 @@ Replace hardcoded base URLs with per-currency endpoints fetched at `setup()` fro
 
 ## Plan
 
-### Phase 1: Bootstrap + per-currency checkout routing (vertical slice)
+### Phase 1: Bootstrap + per-currency checkout routing (vertical slice) — COMPLETE
 
 - **Goal**: `await setup()` fetches sharded config; `createSession` routes by `payload.payment.currency`.
-- [ ] `lib/src/models/sdk_config.dart` - new `SdkEndpoints` (`checkoutApiBaseUrl`, `widgetsBaseUrl`) + `SdkConfig` (raw-string-keyed map, `endpointsFor(Currency)` with `default` fallback) with `fromJson` factories.
-- [ ] `lib/tabby_flutter_inapp_sdk.dart` - export new file.
-- [ ] `lib/src/models/enums.dart` - rename `EnvironmentExt.host` → `bootstrapApiBaseUrl`; remove `widgetsHost`.
-- [ ] `lib/src/internal/tabby_sdk.dart` - add `Future<SdkConfig> getSdkConfig()` to `TabbyWithRemoteDataSource`; impl on `TabbySDK` using injected `http.Client` (visible-for-testing seam); convert `setup` to `Future<void>`; replace `_host`/`_widgetsHost` with `late SdkConfig _config`; route `createSession` via `_config.endpointsFor(payload.payment.currency).checkoutApiBaseUrl`; update `checkSetup` message.
-- [ ] `lib/src/internal/tabby_sdk.dart` - add `@visibleForTesting void primeConfigForTest(SdkConfig)` and `set client(http.Client)` seams.
-- [ ] TDD: `SdkEndpoints.fromJson` extracts only `checkoutApiBaseUrl` + `widgetsBaseUrl`; ignores extras.
-- [ ] TDD: `SdkEndpoints.fromJson` throws `FormatException` when a required URL is missing/empty.
-- [ ] TDD: `SdkConfig.fromJson` builds map with `default` plus per-currency keys; preserves unknown keys (e.g. `EGP`).
-- [ ] TDD: `SdkConfig.fromJson` throws when `default` missing or any per-currency `endpoints` malformed.
-- [ ] TDD: `SdkConfig.endpointsFor(Currency.sar)` returns SAR endpoints when present.
-- [ ] TDD: `SdkConfig.endpointsFor(Currency.aed)` falls back to `default` when AED absent.
-- [ ] TDD: `setup()` issues `POST <bootstrapApiBaseUrl>/api/v1/sdk/config` with `Authorization: Bearer <key>`, `X-SDK-Version: Flutter/<v>`, `Content-Type: application/json`, body `{}` (asserted via `MockClient`).
-- [ ] TDD (critical journey): primed `setup()` + `createSession` with `payment.currency = sar` → POSTs to `<SAR.checkoutApiBaseUrl>/api/v2/checkout`; with `aed` (absent) → POSTs to `<default.checkoutApiBaseUrl>/api/v2/checkout`.
-- [ ] Verify: `flutter analyze` && `flutter test`
+- [x] `lib/src/models/sdk_config.dart` - new `SdkEndpoints` (`checkoutApiBaseUrl`, `widgetsBaseUrl`) + `SdkConfig` (raw-string-keyed map, `endpointsFor(Currency)` with `default` fallback) with `fromJson` factories.
+- [x] `lib/tabby_flutter_inapp_sdk.dart` - export new file.
+- [x] `lib/src/models/enums.dart` - rename `EnvironmentExt.host` → `bootstrapApiBaseUrl`; remove `widgetsHost`.
+- [x] `lib/src/internal/tabby_sdk.dart` - implement bootstrap fetch as a private `_fetchSdkConfig()` on `TabbySDK` (NOT exposed on the public `TabbyWithRemoteDataSource` interface — partners should only see partner-facing entry points); inject `http.Client` (visible-for-testing seam); convert `setup` to `Future<void>`; replace `_host`/`_widgetsHost` with `late SdkConfig _config`; route `createSession` via `_config.endpointsFor(payload.payment.currency).checkoutApiBaseUrl`; update `checkSetup` message.
+- [x] `lib/src/internal/tabby_sdk.dart` - add `@visibleForTesting void primeConfigForTest(SdkConfig)` and `set client(http.Client)` seams (named `httpClientForTesting`).
+- [x] TDD: `SdkEndpoints.fromJson` extracts only `checkoutApiBaseUrl` + `widgetsBaseUrl`; ignores extras.
+- [x] TDD: `SdkEndpoints.fromJson` throws `FormatException` when a required URL is missing/empty.
+- [x] TDD: `SdkConfig.fromJson` builds map with `default` plus per-currency keys; preserves unknown keys (e.g. `EGP`).
+- [x] TDD: `SdkConfig.fromJson` throws when `default` missing or any per-currency `endpoints` malformed.
+- [x] TDD: `SdkConfig.endpointsFor(Currency.sar)` returns SAR endpoints when present.
+- [x] TDD: `SdkConfig.endpointsFor(Currency.aed)` falls back to `default` when AED absent.
+- [x] TDD: `setup()` issues `POST <bootstrapApiBaseUrl>/api/v1/sdk/config` with `X-SDK-Version: Flutter/<v>`, `Content-Type: application/json`, body `{}`, and **no** `Authorization` header (the bootstrap endpoint is merchant-agnostic). Asserted via `MockClient`.
+- [x] TDD (critical journey): primed `setup()` + `createSession` with `payment.currency = sar` → POSTs to `<SAR.checkoutApiBaseUrl>/api/v2/checkout`; with `aed` (absent) → POSTs to `<default.checkoutApiBaseUrl>/api/v2/checkout`.
+- [x] Verify: `flutter analyze` && `flutter test` (passed; analyze exit 0 with 3 stylistic line-length infos in tests).
+
+Note: `example/lib/pages/api_key.dart` `host` → `bootstrapApiBaseUrl` reference was also updated here to keep `flutter analyze` green; the example app's broader async-setup migration remains in Phase 3.
 
 ### Phase 2: Snippet currency-aware widget URL
 

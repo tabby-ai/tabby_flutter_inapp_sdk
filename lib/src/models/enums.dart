@@ -109,21 +109,14 @@ enum OrderHistoryItemPaymentMethod {
 enum Environment { production, staging }
 
 extension EnvironmentExt on Environment {
-  String get host {
+  /// Host used only for the bootstrap `/api/v1/sdk/config` call. Per-request
+  /// hosts are resolved from the loaded `SdkConfig` based on currency.
+  String get bootstrapApiBaseUrl {
     switch (this) {
       case Environment.production:
         return 'https://api.tabby.ai';
       case Environment.staging:
         return 'https://api.tabby.dev';
-    }
-  }
-
-  String get widgetsHost {
-    switch (this) {
-      case Environment.production:
-        return 'https://widgets.tabby.ai/tabby-promo.html';
-      case Environment.staging:
-        return 'https://widgets.tabby.dev/tabby-promo.html';
     }
   }
 }
