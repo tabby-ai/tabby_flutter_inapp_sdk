@@ -72,9 +72,11 @@ class _TabbyWebViewState extends State<TabbyWebView> {
     webViewController.setNavigationDelegate(
       NavigationDelegate(
         onProgress: (int progress) {
-          setState(() {
-            _progress = progress / 100;
-          });
+          if (mounted) {
+            setState(() {
+              _progress = progress / 100;
+            });
+          }
         },
       ),
     );
