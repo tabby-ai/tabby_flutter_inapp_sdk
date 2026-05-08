@@ -101,6 +101,86 @@ String getPrice({
   return installmentPrice;
 }
 
+Future<void> showTabbyLearnMore({
+  required BuildContext context,
+  required String url,
+  required Lang lang,
+}) {
+  return showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    enableDrag: false,
+    useSafeArea: true,
+    backgroundColor: Colors.white,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.zero),
+    ),
+    builder: (ctx) => Directionality(
+      textDirection: lang == Lang.ar ? TextDirection.rtl : TextDirection.ltr,
+      child: _TabbyLearnMoreView(url: url),
+    ),
+  );
+}
+
+class _TabbyLearnMoreView extends StatefulWidget {
+  const _TabbyLearnMoreView({required this.url});
+
+  final String url;
+
+  @override
+  State<_TabbyLearnMoreView> createState() => _TabbyLearnMoreViewState();
+}
+
+class _TabbyLearnMoreViewState extends State<_TabbyLearnMoreView> {
+  late final WebViewController controller;
+  double _progress = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = createBaseWebViewController((_) {})
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (progress) {
+            if (mounted) {
+              setState(() => _progress = progress / 100);
+            }
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(widget.url));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 48,
+          child: Row(
+            children: [
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.close, color: Colors.black87),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        ),
+        if (_progress < 1)
+          LinearProgressIndicator(
+            value: _progress,
+            color: tabbyColor,
+            backgroundColor: Colors.transparent,
+          ),
+        Expanded(
+          child: WebViewWidget(controller: controller),
+        ),
+      ],
+    );
+  }
+}
+
 Future<List<String>> _androidFilePicker(FileSelectorParams params) async {
   if (params.acceptTypes.any((type) => type.contains('image'))) {
     final picker = image_picker.ImagePicker();

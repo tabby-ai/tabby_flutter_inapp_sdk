@@ -1,3 +1,6 @@
+# 2.0.1
+- 🐛 Fixed an iOS 26 crash (`EXC_BAD_ACCESS` in `flutter_inappwebview_ios`) reported on iPhone 17 / iOS 26.4.2 by removing the `flutter_inappwebview` dependency entirely. The "Learn more" page now opens in a full-screen modal sheet powered by `webview_flutter`, with RTL-aware close affordance for Arabic. No integration changes required.
+
 # 2.0.0
 - ❗ Breaking change: `TabbySDK().setup(...)` is now `Future<void>` and must be awaited. Partners must update their integration (this is really an easy todo).
 - 🆕 SDK now bootstraps sharded base URLs from `POST /api/v1/sdk/config` during `setup()`. Per-request hosts are resolved by `Currency` (e.g. `Currency.sar` is routed to KSA-resident endpoints) with a `default` fallback.
