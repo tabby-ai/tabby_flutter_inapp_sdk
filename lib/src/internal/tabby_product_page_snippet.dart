@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -69,13 +68,17 @@ class _TabbyProductPageSnippetState extends State<TabbyProductPageSnippet> {
       final event = LearnMoreClickedEvent.fromJson(json);
       final params = event.data;
       final url = event.url;
-      final browser = ChromeSafariBrowser();
       final initializationData = InitializationData(data: params);
       final fullUrl =
           '$url&${initializationData.type}=${initializationData.data}';
-      final uri = Uri.parse(fullUrl);
-      final webUri = WebUri.uri(uri);
-      browser.open(url: webUri);
+      if (!mounted) {
+        return;
+      }
+      showTabbyLearnMore(
+        context: context,
+        url: fullUrl,
+        lang: widget.lang,
+      );
     }
   }
 
