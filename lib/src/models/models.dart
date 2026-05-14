@@ -601,9 +601,9 @@ class SdkConfig {
   SdkConfig({required this.endpointsByKey});
 
   factory SdkConfig.fromJson(Map<String, dynamic> json) {
-    if (!json.containsKey('default')) {
+    if (!json.containsKey('general')) {
       throw FormatException(
-          'SdkConfig: required "default" key is missing', json);
+          'SdkConfig: required "general" key is missing', json);
     }
     final byKey = <String, SdkEndpoints>{};
     json.forEach((key, value) {
@@ -621,7 +621,7 @@ class SdkConfig {
     if (byCurrency != null) {
       return byCurrency;
     }
-    return endpointsByKey['default']!;
+    return endpointsByKey['general']!;
   }
 }
 

@@ -74,7 +74,7 @@ void main() {
 
   group('TabbySDK.createSession routing', () {
     SdkConfig buildConfig() => SdkConfig.fromJson(<String, dynamic>{
-          'default': {
+          'general': {
             'endpoints': {
               'checkoutApiBaseUrl': 'https://api.tabby.ai',
               'widgetsBaseUrl': 'https://widgets.tabby.ai',
