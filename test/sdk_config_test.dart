@@ -32,7 +32,7 @@ void main() {
         'builds endpointsByKey for default plus per-currency keys, preserving unknown keys',
         () {
       final config = SdkConfig.fromJson(<String, dynamic>{
-        'default': {
+        'general': {
           'endpoints': {
             'checkoutApiBaseUrl': 'https://api.tabby.ai',
             'widgetsBaseUrl': 'https://widgets.tabby.ai',
@@ -53,12 +53,12 @@ void main() {
       });
 
       expect(config.endpointsByKey.keys,
-          containsAll(<String>['default', 'SAR', 'EGP']));
+          containsAll(<String>['general', 'SAR', 'EGP']));
       expect(config.endpointsByKey['SAR']!.checkoutApiBaseUrl,
           'https://api.tabby.sa');
       expect(config.endpointsByKey['EGP']!.widgetsBaseUrl,
           'https://widgets.tabby.eg');
-      expect(config.endpointsByKey['default']!.checkoutApiBaseUrl,
+      expect(config.endpointsByKey['general']!.checkoutApiBaseUrl,
           'https://api.tabby.ai');
     });
 
@@ -67,7 +67,7 @@ void main() {
         () {
       expect(
         () => SdkConfig.fromJson(<String, dynamic>{
-          'default': {
+          'general': {
             'endpoints': {
               'checkoutApiBaseUrl': 'https://api.tabby.ai',
               'widgetsBaseUrl': 'https://widgets.tabby.ai',
@@ -100,7 +100,7 @@ void main() {
 
   group('SdkConfig.endpointsFor', () {
     SdkConfig buildConfig() => SdkConfig.fromJson(<String, dynamic>{
-          'default': {
+          'general': {
             'endpoints': {
               'checkoutApiBaseUrl': 'https://api.tabby.ai',
               'widgetsBaseUrl': 'https://widgets.tabby.ai',

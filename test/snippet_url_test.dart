@@ -44,7 +44,7 @@ void main() {
         'combines TabbySDK.widgetsBaseUrlFor with buildSnippetUrl for sharded currency',
         () {
       final config = SdkConfig.fromJson(<String, dynamic>{
-        'default': {
+        'general': {
           'endpoints': {
             'checkoutApiBaseUrl': 'https://api.tabby.ai',
             'widgetsBaseUrl': 'https://widgets.tabby.ai',
