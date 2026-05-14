@@ -12,6 +12,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 // Import for Android features.
 // ignore: depend_on_referenced_packages
 import 'package:webview_flutter_android/webview_flutter_android.dart';
+// WebViewOverScrollMode is not re-exported by webview_flutter.
+// ignore: depend_on_referenced_packages
+import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 // Import for iOS/macOS features.
 // ignore: depend_on_referenced_packages
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
@@ -209,8 +212,9 @@ Future<List<String>> _androidFilePicker(FileSelectorParams params) async {
 }
 
 WebViewController createBaseWebViewController(
-  void Function(JavaScriptMessage) bridgeMessagesHandler,
-) {
+  void Function(JavaScriptMessage) bridgeMessagesHandler, {
+  bool disableScroll = false,
+}) {
   late final PlatformWebViewControllerCreationParams params;
   if (WebViewPlatform.instance is WebKitWebViewPlatform) {
     params = WebKitWebViewControllerCreationParams(
@@ -267,6 +271,20 @@ WebViewController createBaseWebViewController(
           return _androidFilePicker(params);
         },
       );
+  }
+
+  if (disableScroll) {
+    controller.setNavigationDelegate(
+      NavigationDelegate(
+        onPageFinished: (_) => controller.runJavaScript(
+          "document.documentElement.style.overflow='hidden';"
+          "document.body.style.overflow='hidden';"
+          "document.body.style.overscrollBehavior='none';"
+          "document.body.style.touchAction='none';",
+        ),
+      ),
+    );
+    controller.platform.setOverScrollMode(WebViewOverScrollMode.never);
   }
   return controller;
 }
