@@ -95,7 +95,10 @@ class _TabbyProductPageSnippetState extends State<TabbyProductPageSnippet> {
   @override
   void initState() {
     final uri = Uri.parse(_buildAddress());
-    webViewController = createBaseWebViewController(messageHandler);
+    webViewController = createBaseWebViewController(
+      messageHandler,
+      disableScroll: true,
+    );
     webViewController.loadRequest(uri);
     super.initState();
   }
