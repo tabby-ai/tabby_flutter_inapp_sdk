@@ -95,7 +95,7 @@ class _ApiKeyPageState extends State<ApiKeyPage> {
                         return DropdownMenuItem<Environment>(
                           value: e,
                           child: Text(
-                            "${e.name.toUpperCase()} (${e.bootstrapApiBaseUrl})",
+                            "${e.name.toUpperCase()}",
                           ),
                         );
                       }).toList(),
