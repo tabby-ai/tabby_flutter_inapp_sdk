@@ -9,7 +9,7 @@ import 'package:tabby_flutter_inapp_sdk/tabby_flutter_inapp_sdk.dart';
 
 const _validConfigJson = '''
 {
-  "default": {
+  "general": {
     "endpoints": {
       "checkoutApiBaseUrl": "https://api.tabby.ai",
       "widgetsBaseUrl": "https://widgets.tabby.ai"
@@ -253,7 +253,7 @@ void main() {
 
       const firstJson = '''
 {
-  "default": {
+  "general": {
     "endpoints": {
       "checkoutApiBaseUrl": "https://api.tabby.ai",
       "widgetsBaseUrl": "https://widgets.tabby.ai"
@@ -263,7 +263,7 @@ void main() {
 ''';
       const secondJson = '''
 {
-  "default": {
+  "general": {
     "endpoints": {
       "checkoutApiBaseUrl": "https://api.tabby.dev",
       "widgetsBaseUrl": "https://widgets.tabby.dev"

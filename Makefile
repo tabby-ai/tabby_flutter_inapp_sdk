@@ -38,3 +38,6 @@ publish:
 pods:
 	fvm flutter precache --ios
 	pod install --repo-update --project-directory=example/ios
+
+tests:
+	fvm flutter test
