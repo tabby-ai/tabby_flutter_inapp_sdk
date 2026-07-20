@@ -20,12 +20,12 @@ class TabbyWebView extends StatefulWidget {
   @override
   State<TabbyWebView> createState() => _TabbyWebViewState();
 
-  static void showWebView({
+  static Future<void> showWebView({
     required BuildContext context,
     required String webUrl,
     required TabbyCheckoutCompletion onResult,
-  }) {
-    showModalBottomSheet(
+  }) async {
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       enableDrag: false,
