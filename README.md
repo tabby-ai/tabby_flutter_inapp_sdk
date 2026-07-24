@@ -155,10 +155,49 @@ For any clarification, please refer to the [permission_handler](https://pub.dev/
       onResult: (WebViewResult resultCode) {
         print(resultCode.name);
         // TODO: Process resultCode
+        // The sheet stays open until you close it yourself,
+        // e.g. Navigator.pop(context);
       },
     );
   }
 ```
+
+If you prefer to `await` the checkout outcome instead of handling callbacks, use `showWebViewAsync`:
+
+```dart
+  Future<void> openInAppBrowser() async {
+    final resultCode = await TabbyWebView.showWebViewAsync(
+      context: context,
+      webUrl: session.availableProducts.installments.webUrl,
+    );
+    // The SDK closes the sheet automatically once the first result arrives.
+    switch (resultCode) {
+      case WebViewResult.authorized:
+        // Payment authorized — navigate to your order completion screen
+        break;
+      case WebViewResult.rejected:
+      case WebViewResult.expired:
+      case WebViewResult.close:
+        // Handle unsuccessful outcomes
+        break;
+      case null:
+        // The sheet was dismissed before checkout produced a result
+        break;
+    }
+  }
+```
+
+#### `showWebView` vs `showWebViewAsync` — which one to pick?
+
+| | `showWebView` | `showWebViewAsync` |
+|---|---|---|
+| Result delivery | `onResult` callback, fired for every checkout event | Returned `Future<WebViewResult?>` (first result wins); optional `onResult` is also called |
+| Sheet lifecycle | You close the sheet yourself (e.g. `Navigator.pop` inside `onResult`) | SDK closes the sheet automatically on the first result |
+| Dismissed without a result | `onResult` is simply never called | Future resolves with `null` |
+
+Use `showWebViewAsync` for the common "open checkout, wait for the outcome, continue" flow. Use `showWebView` when you need full control over the sheet lifecycle — for example, to keep the sheet open and recover in place when a session expires.
+
+Do not `await` `showWebView` — it returns `void` by design; the awaitable variant is `showWebViewAsync`.
 
 Also you can use TabbyWebView as inline widget on your page:
 

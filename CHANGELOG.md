@@ -1,3 +1,6 @@
+# 2.1.0
+- 🆕 New `TabbyWebView.showWebViewAsync(...)` — an awaitable way to open checkout: the SDK closes the sheet on the first result and the future resolves with `WebViewResult?` (`null` if the sheet was dismissed before checkout finished). No changes to the existing `showWebView` — current integrations keep working as is.
+
 # 2.0.0
 - ❗ Breaking change: `TabbySDK().setup(...)` is now `Future<void>` and must be awaited. Partners must update their integration (this is really an easy todo).
 - 🆕 SDK now bootstraps sharded base URLs from `POST /api/v1/sdk/config` during `setup()`. Per-request hosts are resolved by `Currency` (e.g. `Currency.sar` is routed to KSA-resident endpoints) with a `default` fallback.
